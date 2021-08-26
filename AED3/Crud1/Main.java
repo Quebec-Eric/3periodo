@@ -7,7 +7,7 @@ git= https://github.com/Quebec-Eric
 import java.util.Scanner;
 
 public class Main {
-  public static void main(String[] args) throws Exception{
+  public static void main(String[] args) throws Exception {
     // remover em um código real
     Scanner ler = new Scanner(System.in);
     System.out.println("*************************************");
@@ -32,10 +32,10 @@ public class Main {
         // code block
     }
     ler.close();
-   
+
   }
 
-  public static void fazerCliente() throws Exception{
+  public static void fazerCliente() throws Exception {
     Scanner ler = new Scanner(System.in);
     System.out.println("Bem vindo aos Clientes");
     System.out.println("/////////////////////////////////////");
@@ -43,6 +43,7 @@ public class Main {
     System.out.println("/ Ler Cliente                   == 2/");
     System.out.println("/ Remover Cliente               == 3/");
     System.out.println("/ Atualizar Cliente             == 4/");
+    System.out.println("/ Ler Todos Cliente             == 5/");
     System.out.println("/////////////////////////////////////");
     int x = ler.nextInt();
     switch (x) {
@@ -53,7 +54,13 @@ public class Main {
         lerCliente();
         break;
       case 3:
-      excluirClientes();
+        excluirClientes();
+        break;
+      case 4:
+        /// excluirClientes();
+        break;
+      case 5:
+        lerTodosClientes();
         break;
 
       default:
@@ -119,7 +126,7 @@ public class Main {
 
   // parte de criar as coisas
 
-  public static void crieteCliente()throws Exception {
+  public static void crieteCliente() throws Exception {
     Scanner ler = new Scanner(System.in);
     Arquivo<Cliente> arqClientes;
     try {
@@ -144,32 +151,42 @@ public class Main {
 
   }
 
-  public static void lerCliente()throws Exception{
+  public static void lerCliente() throws Exception {
     Scanner ler = new Scanner(System.in);
     Arquivo<Cliente> arqClientes;
     arqClientes = new Arquivo<>("clientes", Cliente.class.getConstructor());
     System.out.println("Qual id gostaria de ler");
     Cliente c3 = arqClientes.read(ler.nextInt());
-    if(c3==null){
-      System.out.println("Registro nao encontrado");  
-    }
-    else{
+    if (c3 == null) {
+      System.out.println("Registro nao encontrado");
+    } else {
       System.out.println(c3);
     }
 
     ler.close();
   }
 
-  public static void excluirClientes()throws Exception{
+  public static void lerTodosClientes()throws Exception {
+    Arquivo<Cliente> arqClientes;
+    arqClientes = new Arquivo<>("clientes", Cliente.class.getConstructor());
+    int saberTamanho=arqClientes.saberQuantidadet();
+    for(int i = 0;i<=saberTamanho;i++){
+      Cliente c3 = arqClientes.read(i);
+      if (c3 != null) {
+        System.out.println(c3);
+      }
+    }
+  }
+
+  public static void excluirClientes() throws Exception {
     Scanner ler = new Scanner(System.in);
     Arquivo<Cliente> arqClientes;
     arqClientes = new Arquivo<>("clientes", Cliente.class.getConstructor());
     System.out.println("Qual id gostaria de apagar");
-    boolean saber= arqClientes.excluir(ler.nextInt());
-    if(saber){
+    boolean saber = arqClientes.excluir(ler.nextInt());
+    if (saber) {
       System.out.println("Removido com sucesso");
-    }
-    else{
+    } else {
       System.out.println("Deu ruim para remover");
     }
     ler.close();

@@ -46,7 +46,7 @@ public class Arquivo<T extends Registro> {
     return proximoID;
   }
 
-  public T read(int idProcurado) throws Exception {
+  public T read(int idProcurado) throws Exception {// ler id especifico
 
     arquivo.seek(TAMANHO_CABECALHO); // pular o cabeçalho e se posicionar no primeiro registro
     byte lapide;
@@ -68,10 +68,10 @@ public class Arquivo<T extends Registro> {
     return null;
   }
 
-  public int voltarOtamanhoInt() throws Exception {
-    int i = 0;
-
-    return i;
+  public int saberQuantidadet() throws Exception {
+    arquivo.seek(0);
+    int quantidadesArquivo = arquivo.readInt();
+    return quantidadesArquivo;
   }
 
   public boolean excluir(int idProcurado) throws Exception {
@@ -82,6 +82,7 @@ public class Arquivo<T extends Registro> {
     T obj = construtor.newInstance();
     byte[] ba;
     while (arquivo.getFilePointer() < arquivo.length()) {
+      long x = arquivo.getFilePointer();
       lapide = arquivo.readByte();
       tam = arquivo.readInt();
       if (lapide == ' ') {
@@ -89,8 +90,10 @@ public class Arquivo<T extends Registro> {
         arquivo.read(ba);
         obj.fromByteArray(ba);
         if (obj.getID() == idProcurado) {
+          // System.out.println(x);
+          arquivo.seek(x);
           arquivo.writeByte('$');
-          arquivo.writeLong(-1);
+          // arquivo.writeLong(-1);
           return true;
         }
 
