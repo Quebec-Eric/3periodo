@@ -5,8 +5,8 @@ import java.lang.reflect.Constructor;
 public class Arquivo<T extends Registro> {
 
   RandomAccessFile arquivo;
-  protected int ultimoId=0;
-  protected int contRegistros=0;
+  protected int ultimoId = 0;
+  protected int contRegistros = 0;
   Constructor<T> construtor;
   final int TAMANHO_CABECALHO = 4;
 
@@ -68,18 +68,39 @@ public class Arquivo<T extends Registro> {
     return null;
   }
 
-  public T excluir(int idProcurado)throws Exception{
+  public int voltarOtamanhoInt() throws Exception {
+    int i = 0;
 
-    arquivo.seek(TAMANHO_CABECALHO);
+    return i;
+  }
+
+  public boolean excluir(int idProcurado) throws Exception {
+    boolean saberVerdade = false;
+    arquivo.seek(TAMANHO_CABECALHO); // pular o cabeçalho e se posicionar no primeiro registro
     byte lapide;
-    T obj = construtor.newInstance();
     int tam;
+    T obj = construtor.newInstance();
     byte[] ba;
-    while (arquivo.getFilePointer() < arquivo.length()){
-      
+    while (arquivo.getFilePointer() < arquivo.length()) {
+      lapide = arquivo.readByte();
+      tam = arquivo.readInt();
+      if (lapide == ' ') {
+        ba = new byte[tam];
+        arquivo.read(ba);
+        obj.fromByteArray(ba);
+        if (obj.getID() == idProcurado) {
+          arquivo.writeByte('$');
+          arquivo.writeLong(-1);
+          return true;
+        }
+
+      } else {
+        arquivo.skipBytes(tam);
+      }
+
     }
 
-    return null;
+    return saberVerdade;
   }
 
 }

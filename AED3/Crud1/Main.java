@@ -53,7 +53,7 @@ public class Main {
         lerCliente();
         break;
       case 3:
-        // code block
+      excluirClientes();
         break;
 
       default:
@@ -124,11 +124,14 @@ public class Main {
     Arquivo<Cliente> arqClientes;
     try {
       Cliente c = new Cliente();
-      System.out.println("Nome = ");
+      System.out.print("Nome = ");
+      System.out.println();
       c.setNome(ler.nextLine());
-      System.out.println("Email = ");
+      System.out.print("Email = ");
+      System.out.println();
       c.setEmail(ler.nextLine());
-      System.out.println("Idade = ");
+      System.out.print("Idade = ");
+      System.out.println();
       c.setIdade(ler.nextInt());
       // ESCRITA
       arqClientes = new Arquivo<>("clientes", Cliente.class.getConstructor());
@@ -154,6 +157,21 @@ public class Main {
       System.out.println(c3);
     }
 
+    ler.close();
+  }
+
+  public static void excluirClientes()throws Exception{
+    Scanner ler = new Scanner(System.in);
+    Arquivo<Cliente> arqClientes;
+    arqClientes = new Arquivo<>("clientes", Cliente.class.getConstructor());
+    System.out.println("Qual id gostaria de apagar");
+    boolean saber= arqClientes.excluir(ler.nextInt());
+    if(saber){
+      System.out.println("Removido com sucesso");
+    }
+    else{
+      System.out.println("Deu ruim para remover");
+    }
     ler.close();
   }
 }
