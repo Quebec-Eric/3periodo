@@ -13,7 +13,6 @@ public class Main {
     System.out.println("*************************************");
     System.out.println("* Criar arquivo de Clientes     == 1*");
     System.out.println("* Criar arquivo de livro        == 2*");
-    System.out.println("* Criar arquivo de Supermercado == 3*");
     System.out.println("*************************************");
     int x = ler.nextInt();
     switch (x) {
@@ -23,9 +22,6 @@ public class Main {
         break;
       case 2:
         fazerLivro();
-        break;
-      case 3:
-        Supermercado();
         break;
 
       default:
@@ -70,61 +66,145 @@ public class Main {
 
   }
 
-  public static void fazerLivro() {
+  public static void fazerLivro()throws Exception {
     Scanner ler = new Scanner(System.in);
     System.out.println("Bem vindo aos Livro");
     System.out.println("/////////////////////////////////////");
-    System.out.println("/ Criar novo Livro           == 1/");
-    System.out.println("/ Ler livro                   == 2/");
-    System.out.println("/ Remover Livro               == 3/");
-    System.out.println("/ Atualizar Livro             == 4/");
+    System.out.println("/ Criar novo Livro              == 1/");
+    System.out.println("/ Ler livro                     == 2/");
+    System.out.println("/ Remover Livro                 == 3/");
+    System.out.println("/ Atualizar Livro               == 4/");
     System.out.println("/////////////////////////////////////");
     int x = ler.nextInt();
     switch (x) {
       case 1:
-
+      criarLivro();
         break;
       case 2:
-        // code block
+      lerCLivro();
         break;
       case 3:
-        // code block
+      excluirLivros();
         break;
 
+        case 4:
+        atualizarLiVro();
+      break;
       default:
         // code block
     }
     ler.close();
   }
 
-  public static void Supermercado() {
+  public static void criarLivro() throws Exception {
     Scanner ler = new Scanner(System.in);
-    System.out.println("Bem vindo ao Supermercado");
-    System.out.println("/////////////////////////////////////");
-    System.out.println("/ Criar novo Produto            == 1/");
-    System.out.println("/ Ler Produto                   == 2/");
-    System.out.println("/ Remover Produto               == 3/");
-    System.out.println("/ Atualizar Produto             == 4/");
-    System.out.println("/////////////////////////////////////");
-    int x = ler.nextInt();
-    switch (x) {
-      case 1:
+    Arquivo<Livro> arqLivros;
+    Livro l1 = new Livro();
+    try {
+      System.out.println("Titulo do livro");
+      l1.setTitulo(ler.nextLine());
+      System.out.println("Autor ");
+      l1.setAutor(ler.nextLine());
+      System.out.println("ISBN tem que ter de tamanho 13 ");
+      l1.setIsbn(ler.nextLine());
+      System.out.println("Preco");
+      l1.setPreco(ler.nextFloat());
+      arqLivros = new Arquivo<>("livros", Livro.class.getConstructor());
+      arqLivros.create(l1);
+      ler.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
-        break;
-      case 2:
-        // code block
-        break;
-      case 3:
-        // code block
-        break;
+  }
 
-      default:
-        // code block
+  public static void lerCLivro() throws Exception {
+    Scanner ler = new Scanner(System.in);
+    Arquivo<Livro> arqLivros;
+    arqLivros = new Arquivo<>("livros", Livro.class.getConstructor());
+    System.out.println("Qual id gostaria de ler");
+    Livro c3 = arqLivros.read(ler.nextInt());
+    if (c3 == null) {
+      System.out.println("Registro nao encontrado");
+    } else {
+      System.out.println(c3);
+    }
+
+    ler.close();
+  }
+
+  public static void excluirLivros() throws Exception {
+    Scanner ler = new Scanner(System.in);
+    Arquivo<Livro> arqLivros;
+    arqLivros = new Arquivo<>("livros", Livro.class.getConstructor());
+    System.out.println("Qual id gostaria de apagar");
+    boolean saber = arqLivros.excluir(ler.nextInt());
+    if (saber) {
+      System.out.println("Removido com sucesso");
+    } else {
+      System.out.println("Deu ruim para remover");
     }
     ler.close();
   }
 
-  // parte de criar as coisas
+  public static void atualizarLiVro() throws Exception {
+    Scanner ler = new Scanner(System.in);
+    Arquivo<Livro> arqLivros;
+    int receberId;
+    arqLivros = new Arquivo<>("livros", Livro.class.getConstructor());
+    System.out.println("Seu ID");
+     receberId= ler.nextInt();
+    Livro c3 = arqLivros.read(receberId);
+    System.out.println("Oque gostaria de atualizar");
+    System.out.println("Titulo =1, Autor=2 , Preco =3");
+    int receberResposta = ler.nextInt();
+
+    if (receberResposta == 1) {
+      System.out.println("novo Titulo");
+      String rec = ler.nextLine();
+      rec = ler.nextLine();
+      c3.setTitulo(rec);
+      if (arqLivros.atualizarC(c3)) {
+        System.out.println("atualizado ");
+        System.out.println(arqLivros.read(receberId).toString());
+      }
+
+      else {
+        System.out.println("nao esta atualizado ");
+      }
+
+    } else if (receberResposta == 2) {
+      System.out.println("novo Autor");
+      String rec = ler.nextLine();
+      rec = ler.nextLine();
+      c3.setAutor(rec);
+      if (arqLivros.atualizarC(c3)) {
+        System.out.println("atualizado ");
+        System.out.println(arqLivros.read(receberId).toString());
+      }
+
+      else {
+        System.out.println("nao esta atualizado ");
+      }
+
+    } else {
+
+      System.out.println("novo Preco");
+      float preco = ler.nextFloat();
+      if (c3.getPreco() != preco) {
+        c3.setPreco(preco);
+        if (arqLivros.atualizarC(c3)) {
+          System.out.println("atualizado ");
+          System.out.println(arqLivros.read(receberId).toString());
+
+        }
+      }
+    }
+
+    ler.close();
+  }
+
+  // parte dos Clientes ===============
 
   public static void crieteCliente() throws Exception {
     Scanner ler = new Scanner(System.in);

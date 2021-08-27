@@ -34,10 +34,28 @@ public class Livro implements Registro {
     this.idLivro = id;
   }
 
+   public void setPreco(float p){
+    this.preco=p;
+   } 
+  public void setIsbn(String i){
+    this.isbn=i;
+  }
+  public float getPreco(){
+    return this.preco;
+  }
+
+
   public int getID() {
     return this.idLivro;
   }
 
+  public void setTitulo(String titulo){
+    this.titulo=titulo;
+  }
+
+  public void setAutor(String autor){
+    this.autor=autor;
+  }
   public String toString() {
     DecimalFormat df = new DecimalFormat("#,##0.00");
 

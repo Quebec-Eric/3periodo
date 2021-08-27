@@ -5,9 +5,10 @@ public interface Registro {
   public void fromByteArray(byte[] ba) throws Exception;
 
   public void setID(int ba);
-  public void setIdade(int ba);
+  //public void setIdade(int ba);
 
   public int getID();
+  
 
-  public int getIdade();
+  //public int getIdade();
 }

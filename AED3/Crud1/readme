@@ -1,3 +1,16 @@
-Main    -> todas as funcoes que seram implemnetadas do grud
-Classet -> Todas as classes que irei colocar
+# Crud feito por Eric Azevedo de Oliveira 
+    Aluno e monitor da puc 
 
+
+->Main.java (local onde se inicia todo o programa onde tem as funcoes base que chamam o Crud)
+
+-> Arquivo.java (basicamente onde esta o Crud em si , tento todas as funcoes )
+
+
+->Clientes.java (Parte onde foi criada o objeto Clientes com , Nome , Email , e idade , que serao alocados
+                  em um arquivo com o nome Clientes.db que esta em hexadecimal)
+
+-> Livro.java   (Parte onde foi criado todo o objeto livro , Titulo, Autor,iSbn e preco e sarao alocados
+                  em um arquivo com nome Livros.db)
+                  
+                                    
