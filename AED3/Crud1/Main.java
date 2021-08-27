@@ -57,7 +57,7 @@ public class Main {
         excluirClientes();
         break;
       case 4:
-        /// excluirClientes();
+        AtualizarAcliente();
         break;
       case 5:
         lerTodosClientes();
@@ -151,6 +151,62 @@ public class Main {
 
   }
 
+  public static void AtualizarAcliente() throws Exception {
+    Scanner ler = new Scanner(System.in);
+    Arquivo<Cliente> arqClientes;
+    arqClientes = new Arquivo<>("clientes", Cliente.class.getConstructor());
+    System.out.println("qual o seu id Porfavor?");
+    int receberId = ler.nextInt();
+    Cliente c3 = arqClientes.read(receberId);
+    System.out.println("Oque gostaria de atualizar");
+    System.out.println("Nome =1, Email=2 , idade =3");
+    int receberResposta = ler.nextInt();
+
+    if (receberResposta == 1) {
+      System.out.println("novo nome");
+      String rec = ler.nextLine();
+      rec = ler.nextLine();
+      c3.setNome(rec);
+      if (arqClientes.atualizarC(c3)) {
+        System.out.println("atualizado ");
+        System.out.println(arqClientes.read(receberId).toString());
+      }
+
+      else {
+        System.out.println("nao esta atualizado ");
+      }
+
+    } else if (receberResposta == 2) {
+      System.out.println("novo email");
+      String rec = ler.nextLine();
+      rec = ler.nextLine();
+      c3.setEmail(rec);
+      if (arqClientes.atualizarC(c3)) {
+        System.out.println("atualizado ");
+        System.out.println(arqClientes.read(receberId).toString());
+      }
+
+      else {
+        System.out.println("nao esta atualizado ");
+      }
+
+    } else {
+
+      System.out.println("nova idade");
+      int idade = ler.nextInt();
+      if (c3.getIdade() != idade) {
+        c3.setIdade(idade);
+        if (arqClientes.atualizarC(c3)) {
+          System.out.println("atualizado ");
+          System.out.println(arqClientes.read(receberId).toString());
+
+        }
+      }
+    }
+
+    ler.close();
+  }
+
   public static void lerCliente() throws Exception {
     Scanner ler = new Scanner(System.in);
     Arquivo<Cliente> arqClientes;
@@ -166,11 +222,11 @@ public class Main {
     ler.close();
   }
 
-  public static void lerTodosClientes()throws Exception {
+  public static void lerTodosClientes() throws Exception {
     Arquivo<Cliente> arqClientes;
     arqClientes = new Arquivo<>("clientes", Cliente.class.getConstructor());
-    int saberTamanho=arqClientes.saberQuantidadet();
-    for(int i = 0;i<=saberTamanho;i++){
+    int saberTamanho = arqClientes.saberQuantidadet();
+    for (int i = 0; i <= saberTamanho; i++) {
       Cliente c3 = arqClientes.read(i);
       if (c3 != null) {
         System.out.println(c3);

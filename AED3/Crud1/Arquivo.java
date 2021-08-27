@@ -56,7 +56,7 @@ public class Arquivo<T extends Registro> {
     while (arquivo.getFilePointer() < arquivo.length()) {
       lapide = arquivo.readByte();
       tam = arquivo.readInt();
-      if (lapide == ' ') {
+      if (lapide != '$') {
         ba = new byte[tam];
         arquivo.read(ba);
         obj.fromByteArray(ba);
@@ -104,6 +104,58 @@ public class Arquivo<T extends Registro> {
     }
 
     return saberVerdade;
+  }
+
+  public boolean atualizarC(T novo) throws Exception {
+
+    arquivo.seek(TAMANHO_CABECALHO); // pular o cabeçalho e se posicionar no primeiro registro
+    byte lapide;
+    int tam;
+    T obj = construtor.newInstance();
+    byte[] ba;
+    while (arquivo.getFilePointer() < arquivo.length()) {
+      long x = arquivo.getFilePointer();
+      lapide = arquivo.readByte();
+      tam = arquivo.readInt();
+      if (lapide == ' ') {
+        ba = new byte[tam];
+        arquivo.read(ba);
+        obj.fromByteArray(ba);
+        if (obj.getID() == novo.getID()) {
+          byte[] novo1 = novo.toByteArray();
+          if (novo1.length == ba.length) {
+            colocarnoMesmolugar(novo, x);
+          } else {
+            excluir(novo.getID());
+            arquivo.seek(0);
+            int ultimoID = arquivo.readInt();
+            int proximoID = ultimoID + 1;
+            arquivo.seek(0);
+            arquivo.writeInt(proximoID);
+            arquivo.seek(arquivo.length());
+            long o = arquivo.getFilePointer();
+            colocarnoMesmolugar(novo,o);
+            return true;
+          }
+
+          return true;
+        }
+
+      } else {
+        arquivo.skipBytes(tam);
+      }
+    }
+    return false;
+  }
+
+  public void colocarnoMesmolugar(T obj, long x) throws Exception {
+    arquivo.seek(x);
+
+    byte[] ba = obj.toByteArray();
+    arquivo.writeByte(' ');
+    arquivo.writeInt(ba.length);
+    arquivo.write(ba);
+       
   }
 
 }

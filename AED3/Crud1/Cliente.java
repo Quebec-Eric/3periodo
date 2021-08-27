@@ -4,24 +4,26 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+//import jdk.nashorn.internal.ir.ReturnNode;
+
 public class Cliente implements Registro {
   protected int idCliente;
   protected String nome;
   protected String email;
   protected int idade;
 
-  public Cliente(String t, String a,int i) {
+  public Cliente(String t, String a, int i) {
     this.idCliente = -1;
     this.nome = t;
     this.email = a;
-    this.idade=i;
+    this.idade = i;
   }
 
   public Cliente() {
     this.idCliente = -1;
     this.nome = "";
     this.email = "";
-    this.idade=-1;
+    this.idade = -1;
   }
 
   public void setID(int id) {
@@ -31,19 +33,35 @@ public class Cliente implements Registro {
   public int getID() {
     return this.idCliente;
   }
-  public void setNome(String t){
+
+  public void setNome(String t) {
     this.nome = t;
   }
-   public void setEmail(String a){
+
+  public void setEmail(String a) {
     this.email = a;
-   }
-   public void setIdade(int i){
-    this.idade=i; 
-   }
+  }
+
+  public void setIdade(int i) {
+    this.idade = i;
+  }//
+
+  public int getIdade() {
+    return this.idade;
+  }
+
+  public String getNome() {
+    return this.nome;
+  }
+
+  public String getEmail() {
+    return this.email;
+  }
 
   public String toString() {
 
-    return "\nID....: " + this.idCliente + "\nNome: " + this.nome + "\nEmail.: " + this.email + "\nIdade.:"+ this.idade;
+    return "\nID....: " + this.idCliente + "\nNome: " + this.nome + "\nEmail.: " + this.email + "\nIdade.:"
+        + this.idade;
   }
 
   public byte[] toByteArray() throws IOException {
@@ -62,7 +80,7 @@ public class Cliente implements Registro {
     nome = dis.readUTF();
     email = dis.readUTF();
     idCliente = dis.readInt();
-    idade= dis.readInt();
+    idade = dis.readInt();
   }
 
 }
