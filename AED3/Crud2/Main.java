@@ -1,100 +1,60 @@
+import java.io.*;
+
 /*
+
 Programa feito por
 Eric Azevedo de oliveira 
 git= https://github.com/Quebec-Eric
 */
 
-import java.util.Scanner;
+
 
 public class Main {
   public static void main(String[] args) throws Exception {
     // remover em um código real
-    Scanner ler = new Scanner(System.in);
-    System.out.println("*************************************");
-    System.out.println("* Criar arquivo de Clientes     == 1*");
-    System.out.println("* Criar arquivo de livro        == 2*");
-    System.out.println("*************************************");
-    int x = ler.nextInt();
-    switch (x) {
-      case 1:
-        fazerCliente();
-        ler.close();
-        break;
-      case 2:
-        fazerLivro();
-        break;
 
-      default:
-        // code block
+    Livro l1 = new Livro(-1, "Eu, Robô", "Isaac Asimov", 14.99F);
+    Livro l2 = new Livro(-1, "Eu Sou A Lenda", "Richard Matheson", 21.99F);
+    Livro l3 = new Livro(-1, "Número Zero", "Umberto Eco", 9021);
+    Arquivo<Livro> arqLivros;
+    arqLivros = new Arquivo<>("livros", Livro.class.getConstructor());
+    int id1 = arqLivros.creat(l1);
+    l1.setID(id1);
+    int id2 = arqLivros.creat(l2);
+    l1.setID(id2);
+    int id3 = arqLivros.creat(l3);
+    l1.setID(id3);
+
+    (new File("dados/livros/arquivo.db")).deleteOnExit();
+    (new File("dados/livros.hash_c.db")).deleteOnExit();
+    (new File("dados/livros.hash_d.db")).deleteOnExit();
+   
+    
+
+    System.out.println("\n\nBUSCA POR ID: ");
+    System.out.println("\nLIVRO 3:" + arqLivros.read(id3));
+    System.out.println("\nLIVRO 2:" + arqLivros.read(id2));
+    System.out.println("\nLIVRO 1:" + arqLivros.read(id1));
+
+    System.out.println("Mudando para Autor Maior");
+    l2.autor="Richard Matheson Nascimento";
+    arqLivros.update(l2);
+    System.out.println("\nLIVRO 1:" + arqLivros.read(id2));
+
+    System.out.println("Mudando para Autor Menor");
+    l3.autor="Umberto Ec";
+    arqLivros.update(l3);
+    System.out.println("\nLIVRO 1:" + arqLivros.read(id3));
+
+
+    System.out.println("Remover");
+    boolean saber=arqLivros.remove(id3);
+    if(saber){
+      System.out.println(true);
     }
-    ler.close();
-
-  }
-
-  public static void fazerCliente() throws Exception {
-    Scanner ler = new Scanner(System.in);
-    System.out.println("Bem vindo aos Clientes");
-    System.out.println("/////////////////////////////////////");
-    System.out.println("/ Criar novo Clientes           == 1/");
-    System.out.println("/ Ler Cliente                   == 2/");
-    System.out.println("/ Remover Cliente               == 3/");
-    System.out.println("/ Atualizar Cliente             == 4/");
-    System.out.println("/ Ler Todos Cliente             == 5/");
-    System.out.println("/////////////////////////////////////");
-    int x = ler.nextInt();
-    switch (x) {
-      case 1:
-        //crieteCliente();
-        break;
-      case 2:
-        //lerCliente();
-        break;
-      case 3:
-        //excluirClientes();
-        break;
-      case 4:
-        //AtualizarAcliente();
-        break;
-      case 5:
-        //lerTodosClientes();
-        break;
-
-      default:
-        // code block
+    else{
+      System.out.println(false);
     }
-    ler.close();
 
-  }
-
-  public static void fazerLivro()throws Exception {
-    Scanner ler = new Scanner(System.in);
-    System.out.println("Bem vindo aos Livro");
-    System.out.println("/////////////////////////////////////");
-    System.out.println("/ Criar novo Livro              == 1/");
-    System.out.println("/ Ler livro                     == 2/");
-    System.out.println("/ Remover Livro                 == 3/");
-    System.out.println("/ Atualizar Livro               == 4/");
-    System.out.println("/////////////////////////////////////");
-    int x = ler.nextInt();
-    switch (x) {
-      case 1:
-     // criarLivro();
-        break;
-      case 2:
-      //lerCLivro();
-        break;
-      case 3:
-      //excluirLivros();
-        break;
-
-        case 4:
-        //atualizarLiVro();
-      break;
-      default:
-        // code block
-    }
-    ler.close();
   }
 }
-
- 
