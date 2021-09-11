@@ -1,0 +1,8 @@
+>Main.java (local onde se inicia todo o programa onde tem as funcoes base que chamam o Crud)
+
+-> Arquivo.java (basicamente onde esta o Crud em si , tento todas as funcoes )
+
+->aed3 onde esta alocado a minha tabela hash onde uso como indice para achar as posicoes dos meus registros
+
+-> Livro.java   (Parte onde foi criado todo o objeto livro , Titulo, Autor,iSbn e preco e sarao alocados
+                  em um arquivo com nome Livros.db)
