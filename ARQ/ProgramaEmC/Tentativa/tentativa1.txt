@@ -1,0 +1,211 @@
+``` #include <iostream>
+#include <bits/stdc++.h>
+#include <stdlib.h>
+#include <string>
+#include <cstring>
+#include <vector>
+
+#include "no.hpp"
+#include "arvore.hpp"
+
+using namespace std;
+
+using std::cin;
+using std::cout;
+using std::string;
+
+void tokenize(std::string const &str, const char delim,
+              std::vector<std::string> &out)
+{
+  size_t start;
+  size_t end = 0;
+
+  while ((start = str.find_first_not_of(delim, end)) != std::string::npos)
+  {
+    end = str.find(delim, start);
+    out.push_back(str.substr(start, end - start));
+  }
+}
+
+void saberVerdade(vector<vector<int>> par, vector<vector<int>> impar, int dados1, int dados2)
+{
+
+  if (dados1 < dados2)
+  {
+    cout << "UN sat" << endl;
+  }
+  else
+  {
+    for (int i = 0; i < dados1; i++)
+    {
+      for (int z = 0; z < dados2; i++)
+      {
+        if (par[i][z] == abs(impar[i][z]))
+        {
+          par[i][z] = 0;
+          impar[i][z] = 0;
+        }
+      }
+    }
+  }
+}
+
+int main()
+{
+  vector<vector<int>> clauses;
+  vector<vector<int>> parValores;
+  vector<vector<int>> imparValores;
+  clock_t start, end;
+  start = clock();
+  char c = cin.get();
+  while (c == 'c')
+  {
+    while (c != '\n')
+      c = cin.get();
+    c = cin.get();
+  }
+  int variaveis = 0;
+  int numclass = 0;
+
+  string aux;
+  cin >> aux >> variaveis >> numclass;
+
+  clauses.resize(numclass);
+  parValores.resize(variaveis + 1);
+  imparValores.resize(variaveis + 1);
+  int dado1 = 0;
+  int dado2 = 0;
+  // Read clauses
+  for (int clause = 0; clause < numclass; ++clause)
+  {
+    int literal;
+    while (cin >> literal and literal != 0)
+    {
+      clauses[clause].push_back(literal);
+      if (literal > 0)
+      {
+        parValores[dado1].push_back(literal);
+      }
+      else
+      {
+        imparValores[dado2].push_back(literal);
+      }
+    }
+  }
+
+  saberVerdade(parValores, imparValores, dado1, dado2);
+
+  end = clock();
+  double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
+  cout << "\nTempo de execucao -> " << fixed
+       << time_taken << setprecision(5);
+  cout << " sec " << endl;
+
+  return 0;
+}
+#include <iostream>
+#include <bits/stdc++.h>
+#include <stdlib.h>
+#include <string>
+#include <cstring>
+#include <vector>
+
+#include "no.hpp"
+#include "arvore.hpp"
+
+using namespace std;
+
+using std::cin;
+using std::cout;
+using std::string;
+
+void tokenize(std::string const &str, const char delim,
+              std::vector<std::string> &out)
+{
+  size_t start;
+  size_t end = 0;
+
+  while ((start = str.find_first_not_of(delim, end)) != std::string::npos)
+  {
+    end = str.find(delim, start);
+    out.push_back(str.substr(start, end - start));
+  }
+}
+
+void saberVerdade(vector<vector<int>> par, vector<vector<int>> impar, int dados1, int dados2)
+{
+
+  if (dados1 < dados2)
+  {
+    cout << "UN sat" << endl;
+  }
+  else
+  {
+    for (int i = 0; i < dados1; i++)
+    {
+      for (int z = 0; z < dados2; i++)
+      {
+        if (par[i][z] == abs(impar[i][z]))
+        {
+          par[i][z] = 0;
+          impar[i][z] = 0;
+        }
+      }
+    }
+  }
+}
+
+int main()
+{
+  vector<vector<int>> clauses;
+  vector<vector<int>> parValores;
+  vector<vector<int>> imparValores;
+  clock_t start, end;
+  start = clock();
+  char c = cin.get();
+  while (c == 'c')
+  {
+    while (c != '\n')
+      c = cin.get();
+    c = cin.get();
+  }
+  int variaveis = 0;
+  int numclass = 0;
+
+  string aux;
+  cin >> aux >> variaveis >> numclass;
+
+  clauses.resize(numclass);
+  parValores.resize(variaveis + 1);
+  imparValores.resize(variaveis + 1);
+  int dado1 = 0;
+  int dado2 = 0;
+  // Read clauses
+  for (int clause = 0; clause < numclass; ++clause)
+  {
+    int literal;
+    while (cin >> literal and literal != 0)
+    {
+      clauses[clause].push_back(literal);
+      if (literal > 0)
+      {
+        parValores[dado1].push_back(literal);
+      }
+      else
+      {
+        imparValores[dado2].push_back(literal);
+      }
+    }
+  }
+
+  saberVerdade(parValores, imparValores, dado1, dado2);
+
+  end = clock();
+  double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
+  cout << "\nTempo de execucao -> " << fixed
+       << time_taken << setprecision(5);
+  cout << " sec " << endl;
+
+  return 0;
+}
+```

@@ -1,0 +1,12 @@
+Requisitos Funcionais
+
+-E possível criar uma conta
+-O sistema ira se adequar com base no seu dia a dia
+-O usuário poderá fazer mudanças na parte de comunicação com o sistema
+-Nosso sistema tera comunicacao por voz.
+
+Não-Funcionas
+
+-O Sistema não tera um delay no despertador em si , ele não informara o tempo ate o despertador tocar
+-O Sistema não poderá agir sem seu consentimento, com isso o usuário devera informar a situação na qual ele sera informado
+- Não sera aprova d"água

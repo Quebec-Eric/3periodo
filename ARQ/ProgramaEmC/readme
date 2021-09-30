@@ -1,0 +1,122 @@
+A empresa Umbrella Corporation notou que o simples ato de procurar informações de seus zumbis ,em seus arquivos, estava sendo um trabalho bem demorado, levando-se minutos ate consegui fazer operações fundamentais de um CRUD comum. Com isso resolveram contratar um programador para verificar o sistema, e depois de algum tempo viu que o a busca de registro ficou muito mais rápida e eficaz. Entao foram perguntar para o programador o que ele tinha feito se for trocar o tipo de arquivo que a empresa estava usando ou se ele pensou em outro modo de acessar os registros. O programador fez alguma mudanca? E se fez alguma mudança qual o tipo de arquivo a empresa utilizava antigamente e qual sera o novo?
+
+1. O programador resolver substituir o tipo de arquivo que a empresa utilizada que era conhecido como arquivo indexado, pois, o ato de abrir dois arquivos e fazer a procura de um determinado índice sera um custo enorme, fazendo com que tenha uma grande falta de eficiência.Mas quando os programadores viram isso decidiram mudar para um arquivo (sequencial) no qual ira utilizar só um arquivo donde iria guardas todas as informações do usuário fazendo assim a pesquisa ser bem mais eficaz e rápida.
+
+2. O programador não alterou o tipo de arquivo que a empresa utilizava, ele criou um arquivo reserva chamado índice no qual serviria como guia para ajudar o arquivo novo , não precisando mudar o código antigo, mas sim criar um arquivo novo.
+
+3. O programador resolver substituir o tipo de arquivo antigo que a empresa utilizava e conhecido como arquivo sequencial, pois, ele tem um custo bestante ineficiente, pois, ira ter que percorrer o arquivo ate achar o índice informado.Mas o novo arquivo que a empresa decidiu criar e chamado de arquivo indexado onde o programador utiliza de dois arquivos nos quais um servira como guia para o outro fazendo assim a busca ficar bem mais rápida e eficaz.
+
+4. Não ouve alteração de tipos de arquivos, os programadores criaram um segundo ponteiro para percorrer o arquivo um que iria no início ate o fim e outro que iria do fim para o comeco. 
+
+
+
+================================================================================================================
+
+3.
+ /*Estrutura de 64 bits*/
+Entidade Jogos:
+Atributos:
+Nome_Jogo =String=("RESIDENT EVIL");
+Data_lancamento=Date(1998/01/21);
+‘id’ = int=2;
+nives_dificuldade = unsigned short =1;
+Online_P=boolean=false;
+
+Nome_Jogo(String) = iremos utilizar uma segmentação de char sendo assim, cabe espaço na memória iria gastar 1 ‘byte’ (pois, 1 char = 1byte), fazendo que a string "Resident EVil" como não tem nenhum carácter especial ira ocupar no arquivo 13byts,mas se for no caso de entrar com um nome maior ou menor que a primeira string funcionara, pois, nosso Crud nao existe string com tamanho fixo, mas elas sao variados.
+Data_lancamento(Date)= iremos utilizar o long. Que utiliza 8 bytes para indexá-la no arquivo. long =(-2.147.483.648...2.147.483.647)
+id =(int)=iremos utilizar o próprio int que já e um tamanho ótimo para o id =int( -2.147.483.648...2.147.483.647)
+níveis_dificuldade (short) = iremos utilizar o unsigned short. unsigned short( 0...65.535)
+Online_P (boolean), iremos utilizar 1 byte para acoplar esse local.
+
+/* Arquivo sequencial */
+
+Ao mandar a requisição de criar um registro de Jogos as seguintes execuções. Primeiro verificamos se o arquivo de Jogos já esta criada em nosso sistema, depois dessa verificação sendo já criado iremos posicionar o ponteiro para o início do arquivo(metadados)para buscarmos quantidade de ‘ids’ pertencente no registro e para saber qual sera o próximo ‘id’ a ser colocado no registro, com isso iremos acrescentar 1 a esse numero pelo fato de que estamos colocando mais um registro e depois iremos posicionar o vetor para o fim do arquivo. Com o ponteiro no fim iremos utilizar 4 bytes para escrever o id do novo elemento e com isso iremos começar a escrever em bytes o que compõem o novo registro, iremos fazer com que a string tenha o seu tamanho registrado para que no incio da string iremos colocar seu tamanho propriamente descrito e com isso escreveremos a string com o formato char(1 bytes) em cada local do arquivo em seguida, mas se tiver alguma situação de caractere especial iremos utilizar 2 bytes para escrevê-los. Quando iremos escrever a data iremos utilizar a long no qual ira ocupar 4 bytes do arquivo, o nível de dificuldade ira ocupar 2 byts, mas só iremos utilizar o número 1 ate o 10, e o Online iremos utilizar o bollean que ira ocupar 1 byte apenas no qual ira nos informar de sera 0 ou 1;
+
+Quando pedimos a requisição de ler algum registro que esta dentro de nosso arquivo, passaremos por um seguimentos de item, primeiro iremos abrir o arquivo e posicionar o ponteiro para o cabecalho, e verificar se o ‘id’ procurado e menor ou igual ao número que esta la, deois iremos verificar o arquivo inteiro em busca de nosso ‘id’ pulando de registro para registro verificando
+sempre se aquele registro ainda esta, declarado e não foi removido (se foi removido ira ter uma $ ou * para indicar uma lapide), e se foi alterado ele vai estar em outro local)ao verificar que o registro encontrado e oq desejamos por meio do 'Id' procurado, iremos inicializar a class construtor que ira receber o
+vetor cheio de bytes nos quais sera tratados e setados nos destinos corretos por meio do UTF e assim iremos mostrar os objetos que estavam
+declarados naquela parte do registro.
+
+
+
+====================================================================================================================
+
+/* 
+$ = significado : ira ser o local onde depois de inserir , onde meu heap ja ira estar organizado para a retirada da raiz
+*/
+
+==valores
+10	 49	 84	 92	 38	 15	 93	 62	71  7
+36	 14	 90	 99	 97	 77	 27	 58 4 88
+
+inserir(10),inserir(49),inserir(84),inserir(92),inserir(38),inserir(15),
+inserir(93),
+0-10 | 0-49| 0-84|0-92|0-38|0-15|0-93 // colocando 7 valores inicias no heap        retirar (10); aq1=10
+
+inserir(62) 62>10
+0-62| 0-49| 0-84|0-92|0-38|0-15|0-93   $=   |0-15|0-49|0-84|0-92|0-62|0-38|0-93     retirar (15) ar1=10,15
+
+inserir(71) 71>15
+0-71|0-49|0-84|0-92|0-62|0-38|0-93     $=   |0-38|0-62|0-84|0-92|0-71|0-49|0-93     retirar (38)  ar1=10,15,38
+
+inserir(7) 7<38 
+1-7|0-62|0-84|0-92|0-71|0-49|0-93|     $=   |0-49|0-71|0-84|0-92|1-7|0-62|0-93      retirar (49)  ar1=10,15,38,49
+
+inserir(36) 36<49
+1-36|0-71|0-84|0-92|1-7|0-62|0-93      $=   |0-62|0-92|0-84|1-36|1-7|0-71|0-93      retirar (62)   ar1=10,15,38,49,62 
+
+inserir(14) 14<62
+1-14|0-92|0-84|1-36|1-7|0-71|0-93      $=   |0-71|0-92|0-84|1-36|1-7|1-14|0-93      retirar (71)  ar1=10,15,38,49,62 ,71
+
+inserir(90) 90>71
+0-90|0-92|0-84|1-36|1-7|1-14|0-93      $=   |0-84|0-92|0-90|1-36|1-7|1-14|0-93      retirar (84)  ar1=10,15,38,49,62 ,71,84
+
+inserir(99) 99>84
+0-99|0-92|0-90|1-36|1-7|1-14|0-93      $=   |0-90|0-92|0-93|1-36|1-7|1-14|0-99      retirar (90)  ar1=10,15,38,49,62 ,71,84,90
+
+inserir(92) 90<92
+0-97|0-92|0-93|1-36|1-7|1-14|0-99     $=    |0-92|0-93|0-97|1-36|1-7|1-14|0-99      retirar (92)  ar1=10,15,38,49,62 ,71,84,90,92
+
+inserir(77) 77<92 
+1-77|0-93|0-97|1-36|1-7|1-14|0-99     $=    |0-93|1-7|0-97|1-36|1-77|1-14|0-99      retirar (93)  ar1=10,15,38,49,62 ,71,84,90,92,93 
+
+inserir(27) 27<93
+1-27|1-7|0-97|1-36|1-77|1-14|0-99     $=    |0-97 |1-7|0-99|1-36|1-77|1-14|1-27     retirar (97)  ar1=10,15,38,49,62 ,71,84,90,92,93,97
+
+inserir(58) 58<97
+1-58|1-7|0-99|1-36|1-77|1-14|1-27     $=    |0-99|1-7|1-14|1-36|1-77|1-58|1-27      retirar (99) ar1=10,15,38,49,62 ,71,84,90,92,93,97,99 
+
+inserir(4) 4<99
+1-4|1-7|1-14|1-36|1-77|1-58|1-27 =    $=    |1-4|1-7|1-14|1-36|1-77|1-58|1-27       retirar (4)  arq2; 4 
+
+inserir(88)
+1-88|1-7|1-14|1-36|1-77|1-58|1-27 =   $=    |1-7|1-36|1-14|1-88|1-77|1-58|1-27|     retirar (7)  arq2; 4 ,7
+
+    
+    1-14|1-36|1-27|1-88|1-77|1-58                                           retirar (14)          arq2; 4 ,7,14 
+
+    
+    1-27|1-36|1-58|1-88|1-77                                                retirar (27)          arq2; 4 ,7,14 ,27
+    
+    
+    1-36|1-77|1-58|1-88                                                     retirar (36)          arq2; 4 ,7,14 ,27, 36
+
+  
+    1-58|1-77|1-88                                                          retirar (58)          arq2; 4 ,7,14 ,27, 36,58
+
+  
+    1-77|1-88                                                               retirar (77)          arq2; 4 ,7,14 ,27, 36,58,77
+
+
+    1-88                                                                    retirar (88)           arq2; 4 ,7,14 ,27, 36,58,77,88
+
+
+arq1=10,15,38,49,62,71,84,90,92,93,97,99
+
+arq2; 4 ,7,14 ,27, 36,58,77,88 
+//fazendo a intercalacao
+arqR = 2,4,7,10,14,15,27,36,38,49,58,62,71,77,84,88,90,92,93,97,99 // vetor ordenado
+
+
+
+
