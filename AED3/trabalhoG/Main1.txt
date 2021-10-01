@@ -1,0 +1,108 @@
+import java.io.*;
+import java.util.Scanner;
+
+public class Main {
+    public static Arquivo<Usuario> arqLivros;
+    public static Scanner ler = new Scanner(System.in);
+
+    public static void main(String[] args) throws Exception {
+        // remover em um código real
+        (new File("dados/livros/arquivo.db")).delete();
+        (new File("dados/livros.hash_c.db")).delete();
+        (new File("dados/livros.hash_d.db")).delete();
+        // Arquivo<Livro> arqLivros;
+        arqLivros = new Arquivo<>("livros", Usuario.class.getConstructor());
+        // Scanner ler = new Scanner(System.in);
+        int oqFazer = 0;
+
+        Usuario u1 = new Usuario(-1, "eric@gamial.com", "Eric", "321");
+
+        int pegarid = arqLivros.creat(u1);
+    }
+}
+
+
+
+
+import java.util.Scanner;
+import java.io.*;
+
+public class Main {
+
+    public static Arquivo<Usuario> arqUsuario;
+    public static Scanner leitura = new Scanner(System.in);
+
+    public static void main(String[] args) throws Exception {
+        try {
+            arqUsuario = new Arquivo<>("Usuario", Usuario.class.getConstructor());
+            int oqFazer = 0;
+            do {
+                System.out.println("ACESSO\n");
+                System.out.println("1) Acesso ao sistema");
+                System.out.println("2) Novo Usuario (Primeiro acesso)");
+
+                System.out.println("\n0) Sair");
+                oqFazer = leitura.nextInt();
+                switch (oqFazer) {
+                    case 1:
+                        // sistemaOpen();
+                        break;
+                    case 2:
+                        newUsuario(arqUsuario);
+                        break;
+
+                    default:
+                        break;
+                }
+            } while (oqFazer != 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /*
+     * public static void sistemaOpen() { String email = ""; String senha = "";
+     * 
+     * email = leitura.nextLine(); //buscar no index sec if(/*Busca pelo email no
+     * hash//se existir no indice { senha = leitura.nextLine(); // comparar com a do
+     * BD if(senha.equals("d"/*Senha puxado do BD/)) { System.out.
+     * println("Logado com sucesso!, redirecionando para a pagina principal..."); }
+     * else{ System.out.println("Senha incorreta"); } } else{
+     * System.out.println("Email nao encontrado na base de dados do sistema"); } }
+     */
+
+    public static void newUsuario(Arquivo<Usuario> arqUsuario) throws Exception{
+        arqUsuario = new Arquivo<>("Usuario", Usuario.class.getConstructor());
+        String nome = "";
+        String email = "";
+        String senha = "";
+
+        System.out.println("Hallo");
+        leitura.nextLine();
+        email = leitura.nextLine();
+        if (!email.equals("")) {
+            if (email.length() > 4)// verificar cadastro -- ak caso n tiver cadastro
+            {
+                nome = leitura.nextLine();
+                senha = leitura.nextLine();
+
+                System.out.println("Deseja confirmar o cadastro -> 0 - Nao  1 - Sim ");
+                int confirm = leitura.nextInt();
+                if (confirm == 1) {
+
+                    //Usuario U1 = new Usuario(-1,email,nome, senha);
+                    Usuario u1 = new Usuario(-1, "eric@gamial.com", "Eric", "321");
+                   int i1= arqUsuario.creat(u1);
+                    System.out.println("Cadastro realizado com sucesso");
+                } else {
+                    System.out.println("Email ja cadastrado!");
+                }
+
+            }
+
+        }
+
+    }
+
+}

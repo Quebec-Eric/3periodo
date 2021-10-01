@@ -4,63 +4,81 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Usuario implements tabelaHex.Registro {
-  protected int idUsuario;
-  protected String nome;
-  protected String email;
-  protected String senha;
-
-  public Usuario(String t, String a, String admin) {
-    this.idUsuario = -1;
-    this.nome = t;
-    this.email = a;
-    this.senha = admin; 
-  }
-
-  public Usuario() {
-    this.idUsuario = -1;
-    this.nome = "";
-    this.email = "";
-    this.senha = ""; 
-  }
-
-  public void setID(int id) {
-    this.idUsuario = id;
-  }
-
-  public int getID() {
-    return this.idUsuario;
-  }
-
-  public String getEmail() {
-    return this.email;
-  }
-
-
-
-  public String toString() {
-
-    return "\nID....: " + this.idUsuario + "\nNome: " + this.nome + "\nEmail.: " + this.email + "\nSenha.: " + this.senha;
-  }
-
-  public byte[] toByteArray() throws IOException {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    DataOutputStream dos = new DataOutputStream(baos);
-    dos.writeUTF(nome);
-    dos.writeUTF(email);
-    dos.writeUTF(senha);
-    dos.writeInt(idUsuario);
-    return baos.toByteArray();
-  }
-
-  public void fromByteArray(byte[] ba) throws IOException {
-    ByteArrayInputStream bais = new ByteArrayInputStream(ba);
-    DataInputStream dis = new DataInputStream(bais);
-    nome = dis.readUTF();
-    email = dis.readUTF();
-    senha = dis.readUTF();
-    idUsuario = dis.readInt();
+public class Usuario implements Registro{
     
-  }
+    private int idUsuario;
+    private String nome;
+    private String email;
+    private String senha;
 
+    public Usuario(){
+        this.idUsuario = -1;
+        this.nome = "";
+        this.email = "";
+        this.senha = "";
+    }
+    public Usuario(int id, String email, String nome, String senha){
+        this.idUsuario = id;
+        this.nome = nome;
+        this.email =  email;
+        this.senha = senha;
+    }
+    
+    @Override
+    public void setID(int n) {
+        this.idUsuario = n;
+    }
+
+    @Override
+    public int getID() {
+        return this.idUsuario;
+    }
+    
+    @Override
+    public String getHash() {
+        return this.email;
+    }
+    
+
+    public void setEmail(String s) {
+        this.email = s;
+    }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+    public String getNome() {
+        return nome;
+    }
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+    public String getSenha() {
+        return senha;
+    }
+    
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return this.idUsuario +";"+this.nome+";"+this.email+";"+this.senha+";";
+    }
+
+    public byte[] toByteArray() throws IOException {
+        ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
+        DataOutputStream DAOS = new DataOutputStream(BAOS);
+        DAOS.writeInt(getID());
+        DAOS.writeUTF(this.nome);
+        DAOS.writeUTF(this.email);
+        DAOS.writeUTF(this.senha);
+        return BAOS.toByteArray();
+    }
+
+    public void fromByteArray(byte[] ba) throws IOException {
+        ByteArrayInputStream BAIS = new ByteArrayInputStream(ba);
+        DataInputStream DAIS = new DataInputStream(BAIS);
+        setID(DAIS.readInt());
+        this.nome = DAIS.readUTF();
+        this.email = DAIS.readUTF();
+        this.senha = DAIS.readUTF();
+
+    }
 }

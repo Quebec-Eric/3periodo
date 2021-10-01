@@ -106,19 +106,6 @@ public class HashExtensivel<T extends RegistroHashExtensivel<T>> {
         return null;
     }
 
-    public T readEmail(String email) {
-      if (empty())
-        return null;
-      int i = 0;
-      while (i < quantidade) {
-
-        System.out.println(elementos.get(i).hashCodeE());
-        i++;
-
-      }
-      return null;
-    }
-
     public boolean update(T elem) {
       if (empty())
         return false;
@@ -342,7 +329,6 @@ public class HashExtensivel<T extends RegistroHashExtensivel<T>> {
     long novoEndereco = arqCestos.length();
     arqCestos.seek(novoEndereco);
     arqCestos.write(c2.toByteArray());
-    
 
     // Atualiza os dados no diretório
     int inicio = diretorio.hash2(elem.hashCode(), c.profundidadeLocal);
@@ -390,18 +376,6 @@ public class HashExtensivel<T extends RegistroHashExtensivel<T>> {
     c.fromByteArray(ba);
 
     return c.read(chave);
-  }
-
-  public T readEmail(String emial) throws Exception {
-    byte[] bd = new byte[(int) arqDiretorio.length()];
-    arqDiretorio.seek(0);
-    arqDiretorio.read(bd);
-    diretorio = new Diretorio();
-    diretorio.fromByteArray(bd);
-    System.out.println(diretorio.getClass());
-    
-
-    return null;
   }
 
   public boolean update(T elem) throws Exception {
@@ -489,5 +463,4 @@ public class HashExtensivel<T extends RegistroHashExtensivel<T>> {
       e.printStackTrace();
     }
   }
-
 }

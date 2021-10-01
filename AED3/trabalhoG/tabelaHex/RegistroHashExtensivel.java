@@ -5,7 +5,6 @@ import java.io.IOException;
 public interface RegistroHashExtensivel<T> {
 
   public int hashCode(); // chave numérica para ser usada no diretório
-  public String hashCodeE();
 
   public short size(); // tamanho FIXO do registro
 
