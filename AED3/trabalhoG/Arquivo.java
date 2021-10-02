@@ -1,3 +1,4 @@
+
 import java.io.RandomAccessFile;
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -44,7 +45,6 @@ public class Arquivo<T extends Registro> {
     arquivo.writeInt(registro.length);
     arquivo.write(registro);
     indiceDireto.create(new ParIDEndereco(ob.getHash(), enderecoArk));
-    System.out.println("to aki");
 
     return ob.getID();
 
@@ -139,7 +139,7 @@ public class Arquivo<T extends Registro> {
           arquivo.writeByte(' ');
           arquivo.writeInt(registroNovo.length);
           arquivo.write(registroNovo);
-          indiceDireto.update(new ParIDEndereco(obN.getHash(), novoLugar));
+          //indiceDireto.update(new ParIDEndereco(obN.getID(), novoLugar));
           return true;
         }
         

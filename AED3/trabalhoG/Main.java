@@ -9,8 +9,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
         // remover em um código real
         (new File("dados/livros/arquivo.db")).delete();
-        (new File("dados/livros.hash_c.db")).delete();
-        (new File("dados/livros.hash_d.db")).delete();
+        (new File("dados/Usuario.hash_c.db")).delete();
+        (new File("dados/Usuario.hash_d.db")).delete();
         // Arquivo<Livro> arqLivros;
         arqLivros = new Arquivo<>("Usuario", Usuario.class.getConstructor());
         int oqfazer = 0;

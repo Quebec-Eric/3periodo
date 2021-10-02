@@ -8,7 +8,7 @@ public class ParIDEndereco implements tabelaHex.RegistroHashExtensivel<ParIDEnde
 
   private String email;
   private long endereco;
-  private short TAMANHO = 12;
+  private short TAMANHO = 48;
 
   public ParIDEndereco() {
     this(" ", -1);
@@ -49,7 +49,7 @@ public class ParIDEndereco implements tabelaHex.RegistroHashExtensivel<ParIDEnde
   public void fromByteArray(byte[] ba) throws IOException {
     ByteArrayInputStream bais = new ByteArrayInputStream(ba);
     DataInputStream dis = new DataInputStream(bais);
-    this.email = dis.readUTF();
+    this.email= dis.readUTF();
     this.endereco = dis.readLong();
   }
 
