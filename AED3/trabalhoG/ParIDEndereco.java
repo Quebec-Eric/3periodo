@@ -14,9 +14,15 @@ public class ParIDEndereco implements tabelaHex.RegistroHashExtensivel<ParIDEnde
     this(" ", -1);
   }
 
-  public ParIDEndereco(String i, long e) {
-      this.email = i;
-      this.endereco = e;
+  public ParIDEndereco(String e, long i) {
+    try {
+      this.email = e;
+      this.endereco = i;
+      if (e.length() + 4 > TAMANHO)
+        throw new Exception("Número de caracteres do email maior que o permitido. Os dados serão cortados.");
+    } catch (Exception ec) {
+      ec.printStackTrace();
+    }
   }
 
   @Override
@@ -28,11 +34,9 @@ public class ParIDEndereco implements tabelaHex.RegistroHashExtensivel<ParIDEnde
     return this.TAMANHO;
   }
 
-  public long getEndereco(){
+  public long getEndereco() {
     return this.endereco;
   }
-
- 
 
   public String toString() {
     return this.email + ";" + this.endereco;
@@ -43,13 +47,19 @@ public class ParIDEndereco implements tabelaHex.RegistroHashExtensivel<ParIDEnde
     DataOutputStream dos = new DataOutputStream(baos);
     dos.writeUTF(this.email);
     dos.writeLong(this.endereco);
-    return baos.toByteArray();
+    byte[] bs = baos.toByteArray();
+    byte[] bs2 = new byte[TAMANHO];
+    for (int i = 0; i < TAMANHO; i++)
+      bs2[i] = ' ';
+    for (int i = 0; i < bs.length && i < TAMANHO; i++)
+      bs2[i] = bs[i];
+    return bs2;
   }
 
   public void fromByteArray(byte[] ba) throws IOException {
     ByteArrayInputStream bais = new ByteArrayInputStream(ba);
     DataInputStream dis = new DataInputStream(bais);
-    this.email= dis.readUTF();
+    this.email = dis.readUTF();
     this.endereco = dis.readLong();
   }
 

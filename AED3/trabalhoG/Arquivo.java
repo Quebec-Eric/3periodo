@@ -5,7 +5,6 @@ import java.lang.reflect.Constructor;
 
 import tabelaHex.*;
 
-
 public class Arquivo<T extends Registro> {
 
   RandomAccessFile arquivo;
@@ -78,37 +77,34 @@ public class Arquivo<T extends Registro> {
     return null;
   }
 
-    public boolean remove (int id)throws Exception{
+  public boolean remove(int id) throws Exception {
 
-      byte[] registroRemover;
-      int tamanhoRegistro=0;
-      byte lapida;
-      T ob;
-      ParIDEndereco indiceId = indiceDireto.read(id);
-      if(indiceId!=null){
+    byte[] registroRemover;
+    int tamanhoRegistro = 0;
+    byte lapida;
+    T ob;
+    ParIDEndereco indiceId = indiceDireto.read(id);
+    if (indiceId != null) {
+      arquivo.seek(indiceId.getEndereco());
+      lapida = arquivo.readByte();
+      tamanhoRegistro = arquivo.readInt();
+      registroRemover = new byte[tamanhoRegistro];
+      arquivo.read(registroRemover);
+      if (lapida == ' ') {
+        ob = construtor.newInstance();
+        ob.fromByteArray(registroRemover);
         arquivo.seek(indiceId.getEndereco());
-        lapida= arquivo.readByte();
-        tamanhoRegistro=arquivo.readInt();
-        registroRemover=new byte[tamanhoRegistro];
-        arquivo.read(registroRemover);
-        if(lapida==' '){
-          ob=construtor.newInstance();
-          ob.fromByteArray(registroRemover);
-          arquivo.seek(indiceId.getEndereco());
-          arquivo.writeByte('$');
-          indiceDireto.delete(id);
-          return true;
-        }
+        arquivo.writeByte('$');
+        indiceDireto.delete(id);
+        return true;
       }
-
-      return false;
     }
 
+    return false;
+  }
 
+  public boolean update(T obN) throws Exception {
 
-  public boolean update(T obN) throws Exception{
-
-    
     byte[] registroAntigo;
     byte[] registroNovo;
     int tamanhoRegistro;
@@ -116,22 +112,21 @@ public class Arquivo<T extends Registro> {
     T obA;
     ParIDEndereco indiceId = indiceDireto.read(obN.getID());
 
-    if(indiceId!=null){
+    if (indiceId != null) {
       arquivo.seek(indiceId.getEndereco());
-      lapida=arquivo.readByte();
-      tamanhoRegistro=arquivo.readInt();
-      registroAntigo= new byte[tamanhoRegistro];
+      lapida = arquivo.readByte();
+      tamanhoRegistro = arquivo.readInt();
+      registroAntigo = new byte[tamanhoRegistro];
       arquivo.read(registroAntigo);
-      if(lapida ==' '){
-        obA=construtor.newInstance();
+      if (lapida == ' ') {
+        obA = construtor.newInstance();
         obA.fromByteArray(registroAntigo);
-        registroNovo=obN.toByteArray();
-        if(registroAntigo.length>registroNovo.length){
-          arquivo.seek(indiceId.getEndereco()+5);
+        registroNovo = obN.toByteArray();
+        if (registroAntigo.length > registroNovo.length) {
+          arquivo.seek(indiceId.getEndereco() + 5);
           arquivo.write(registroNovo);
           return true;
-        }
-        else{
+        } else {
           arquivo.seek(indiceId.getEndereco());
           arquivo.writeByte('$');
           arquivo.seek(arquivo.length());
@@ -139,14 +134,16 @@ public class Arquivo<T extends Registro> {
           arquivo.writeByte(' ');
           arquivo.writeInt(registroNovo.length);
           arquivo.write(registroNovo);
-          //indiceDireto.update(new ParIDEndereco(obN.getID(), novoLugar));
+          // indiceDireto.update(new ParIDEndereco(obN.getID(), novoLugar));
           return true;
         }
-        
+
       }
     }
 
     return false;
   }
+
+  
 
 }
