@@ -49,14 +49,14 @@ public class Arquivo<T extends Registro> {
 
   }
 
-  public T read(int id) throws Exception {
+  public T read(String email) throws Exception {
     T ob;
     arquivo.seek(4);// pular as informacoes do cabecalho
     byte[] registro;
     int tamanhoRegistro;
     byte lapide;
 
-    ParIDEndereco indiceId = indiceDireto.read(id);
+    ParIDEndereco indiceId = indiceDireto.read(email.hashCode());
 
     if (indiceId != null) {
 
@@ -68,22 +68,22 @@ public class Arquivo<T extends Registro> {
       if (lapide == ' ') {
         ob = construtor.newInstance();
         ob.fromByteArray(registro);
-        if (ob.getID() == id) {
-          return ob;
-        }
+
+        return ob;
+
       }
     }
 
     return null;
   }
 
-  public boolean remove(int id) throws Exception {
+  public boolean remove(String email) throws Exception {
 
     byte[] registroRemover;
     int tamanhoRegistro = 0;
     byte lapida;
     T ob;
-    ParIDEndereco indiceId = indiceDireto.read(id);
+    ParIDEndereco indiceId = indiceDireto.read(email.hashCode());
     if (indiceId != null) {
       arquivo.seek(indiceId.getEndereco());
       lapida = arquivo.readByte();
@@ -95,7 +95,7 @@ public class Arquivo<T extends Registro> {
         ob.fromByteArray(registroRemover);
         arquivo.seek(indiceId.getEndereco());
         arquivo.writeByte('$');
-        indiceDireto.delete(id);
+        indiceDireto.delete(email.hashCode());
         return true;
       }
     }
@@ -110,7 +110,7 @@ public class Arquivo<T extends Registro> {
     int tamanhoRegistro;
     byte lapida;
     T obA;
-    ParIDEndereco indiceId = indiceDireto.read(obN.getID());
+    ParIDEndereco indiceId = indiceDireto.read(obN.getEmail().hashCode());
 
     if (indiceId != null) {
       arquivo.seek(indiceId.getEndereco());
@@ -143,7 +143,5 @@ public class Arquivo<T extends Registro> {
 
     return false;
   }
-
-  
 
 }

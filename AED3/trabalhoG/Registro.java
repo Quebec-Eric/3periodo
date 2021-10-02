@@ -10,6 +10,7 @@ public interface Registro {
 
   public int getID();
   public String getHash();
+  public String getEmail();
 
   //public int getIdade();
 }

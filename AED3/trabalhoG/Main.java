@@ -27,7 +27,7 @@ public class Main {
           break;
 
         case 2:
-          // arqLivros.remove("felipe@hotmail.com");
+          System.out.println(arqLivros.remove("Eric@Eri"));
           break;
 
         default:

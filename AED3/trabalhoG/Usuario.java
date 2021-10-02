@@ -46,6 +46,9 @@ public class Usuario implements Registro{
     public void setNome(String nome) {
         this.nome = nome;
     }
+    public String getEmail() {
+        return email;
+    }
     public String getNome() {
         return nome;
     }
@@ -59,7 +62,8 @@ public class Usuario implements Registro{
     @Override
     public String toString() {
         // TODO Auto-generated method stub
-        return this.idUsuario +";"+this.nome+";"+this.email+";"+this.senha+";";
+        return "-------------------------------"+ "\n           Usuario"+"\n Id-Usuario = "+this.idUsuario +"\n Nome-Usuario = "+this.nome+"\n Email-Usuario = "+this.email+"\n Senha-Usuario = "+this.senha+
+        "\n-------------------------------";
     }
 
     public byte[] toByteArray() throws IOException {
