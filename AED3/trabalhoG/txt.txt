@@ -20,6 +20,7 @@ public class Main {
       System.out.println("-------------------------------");
       System.out.println("1 - Acesso ao Sistema");
       System.out.println("2 - Novo usuário (primeiro acesso)");
+      System.out.println("3 - Alterar Senha");
       System.out.println("\n0 - Sair");
       oqfazer = leitura.nextInt();
       switch (oqfazer) {
@@ -35,7 +36,9 @@ public class Main {
           Teste(arqLivros);
           break;
           
-       
+        case 3:
+        alterarSenha(arqLivros);
+        break;
         default:
           System.out.print("Opcao Invalida");
           break;
@@ -117,7 +120,36 @@ public class Main {
   }
 
 
- 
+ public static void alterarSenha(Arquivo<Usuario> a) throws Exception {
+
+    String email = "";
+    String senha = "";
+
+    leitura.nextLine();
+
+    System.out.print("Digite o Email : ");
+    email = leitura.nextLine();
+    if (arqLivros.saberLocal(email)) {
+      System.out.print("Digite a Senha antiga: ");
+      senha = leitura.nextLine();
+      if (arqLivros.sabersenha(email, senha)) {
+          System.out.print("Nova Senha : ");
+          senha = leitura.nextLine();
+          boolean vef = false; 
+          vef = arqLivros.trocarSenha(email,senha);
+          if(vef == true)
+          {
+            System.out.println("Senha alterada com sucesso");
+          }else{System.out.println("Erro ao trocar a senha");}
+          
+      } else {
+        System.out.println("Senha incorreta");
+      }
+    } else {
+      System.out.println("Email nao encontrado");
+    }
+    
+  }
 
  
 

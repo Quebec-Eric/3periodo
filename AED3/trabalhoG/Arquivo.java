@@ -49,7 +49,7 @@ public class Arquivo<T extends Registro> {
 
   }
 
-  public T read(String email) throws Exception {
+  public T read(String email, String senha) throws Exception {
     T ob;
     arquivo.seek(4);// pular as informacoes do cabecalho
     byte[] registro;
@@ -68,8 +68,9 @@ public class Arquivo<T extends Registro> {
       if (lapide == ' ') {
         ob = construtor.newInstance();
         ob.fromByteArray(registro);
-
-        return ob;
+        if (ob.getSenha().equals(senha)) {
+          return ob;
+        }
 
       }
     }
@@ -98,6 +99,42 @@ public class Arquivo<T extends Registro> {
         indiceDireto.delete(email.hashCode());
         return true;
       }
+    }
+
+    return false;
+  }
+
+  public boolean sabersenha(String email, String senha) throws Exception {
+    T ob;
+    arquivo.seek(4);// pular as informacoes do cabecalho
+    byte[] registro;
+    int tamanhoRegistro;
+    byte lapide;
+    ParIDEndereco indiceId = indiceDireto.read(email.hashCode());
+    if (indiceId != null) {
+      arquivo.seek(indiceId.getEndereco());
+      lapide = arquivo.readByte();
+      tamanhoRegistro = arquivo.readInt();
+      registro = new byte[tamanhoRegistro];
+      arquivo.read(registro);
+      if (lapide == ' ') {
+        ob = construtor.newInstance();
+        ob.fromByteArray(registro);
+    
+        if (ob.getSenha().equals(senha)) {
+          return true;
+        }
+
+      }
+    }
+
+    return false;
+  }
+
+  public boolean saberLocal(String email) throws Exception {
+    ParIDEndereco indiceId = indiceDireto.read(email.hashCode());
+    if (indiceId != null) {
+      return true;
     }
 
     return false;
@@ -142,6 +179,58 @@ public class Arquivo<T extends Registro> {
     }
 
     return false;
+  }
+
+  public boolean trocarSenha(String email, String senha) throws Exception {
+
+    byte[] registroAntigo;
+    byte[] registroNovo;
+    int tamanhoRegistro;
+    byte lapida;
+    T ob;
+    ParIDEndereco indiceId = indiceDireto.read(email.hashCode());
+
+    arquivo.seek(indiceId.getEndereco());
+    lapida = arquivo.readByte();
+    tamanhoRegistro = arquivo.readInt();
+    registroAntigo = new byte[tamanhoRegistro];
+    arquivo.read(registroAntigo);
+    if (lapida == ' ') {
+      ob = construtor.newInstance();
+      ob.fromByteArray(registroAntigo);
+      if (ob.getSenha().equals(senha)) {
+        System.out.println("Senha igausi");
+      } else {
+
+        if (ob.getSenha().length() > senha.length()) {
+          
+          arquivo.seek(indiceId.getEndereco() + 5);
+          ob.setSenha(senha);
+          byte[] registro = ob.toByteArray();
+          arquivo.write(registro);
+          return true;
+        } else {
+          arquivo.seek(indiceId.getEndereco());
+          arquivo.writeByte('$');
+          arquivo.seek(arquivo.length());
+          long novoLugar = arquivo.getFilePointer();
+          ob.setSenha(senha);
+          byte[] registro = ob.toByteArray();
+          arquivo.write(registro);
+          arquivo.writeByte(' ');
+          arquivo.writeInt(registro.length);
+          arquivo.write(registro);
+
+          indiceDireto.update(new ParIDEndereco(ob.getHash(), novoLugar));
+          return true;
+        }
+
+      }
+
+    }
+
+    return false;
+
   }
 
 }
