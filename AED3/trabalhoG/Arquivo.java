@@ -10,6 +10,10 @@ public class Arquivo<T extends Registro> {
   RandomAccessFile arquivo;
   HashExtensivel<ParIDEndereco> indiceDireto;
   Constructor<T> construtor;
+  ArvoreBMais<ParIntInt> arvore;
+  RandomAccessFile pergunta;
+  Pergunta pqTeste;
+
 
   public Arquivo(String nomeArquivo, Constructor<T> c) throws Exception {
     File f = new File("dados");
@@ -21,11 +25,14 @@ public class Arquivo<T extends Registro> {
       f.mkdir();
     }
     arquivo = new RandomAccessFile("dados/" + nomeArquivo + "/arquivo.db", "rw");
+    pergunta = new RandomAccessFile("dados/" + "perguntas" + ".db", "rw");
     construtor = c;
     if (arquivo.length() == 0) {
       arquivo.writeInt(0);
       indiceDireto = new HashExtensivel<>(ParIDEndereco.class.getConstructor(), 4,
           "dados/" + nomeArquivo + ".hash_d.db", "dados/" + nomeArquivo + ".hash_c.db");
+      arvore = new ArvoreBMais<>(ParIntInt.class.getConstructor(), 5, "dados/" + "arvore1" + ".db");
+
     }
   }
 
@@ -120,7 +127,7 @@ public class Arquivo<T extends Registro> {
       if (lapide == ' ') {
         ob = construtor.newInstance();
         ob.fromByteArray(registro);
-    
+
         if (ob.getSenha().equals(senha)) {
           return true;
         }
@@ -138,6 +145,37 @@ public class Arquivo<T extends Registro> {
     }
 
     return false;
+  }
+
+  public boolean perguntaN(String email, String senha) throws Exception {
+    T ob = read(email, senha);
+    long t = 10/10/2020;
+     short g =100; 
+    pqTeste = new Pergunta(ob.getID(),2,t,g,"Se 2 + 2 sao 4 , por que o pc ta caro?","caro",true);
+    //System.out.println(creatP(ob));
+
+
+    return true;
+  }
+
+  public int creatP( T ob) throws Exception {
+
+    pergunta.seek(0); // colocar o ponteiro na posicao 1 do arquivo
+    int idUltimo = pergunta.readInt();// saber qual o ultimo id no arquivo
+    ob.setID(idUltimo + 1);// colocar mais 1 id no indice
+    pergunta.seek(0);// voltar para a posicao 0
+    pergunta.writeInt(ob.getID());
+
+    pergunta.seek(pergunta.length());
+    long enderecoArk = pergunta .getFilePointer();
+    byte[] registro = ob.toByteArray();
+    pergunta.writeByte(' ');
+    pergunta.writeInt(registro.length);
+    pergunta.write(registro);
+   // indiceDireto.create(new ParIDEndereco(ob.getHash(), enderecoArk));
+
+    return ob.getID();
+
   }
 
   public boolean update(T obN) throws Exception {
@@ -203,7 +241,7 @@ public class Arquivo<T extends Registro> {
       } else {
 
         if (ob.getSenha().length() > senha.length()) {
-          
+
           arquivo.seek(indiceId.getEndereco() + 5);
           ob.setSenha(senha);
           byte[] registro = ob.toByteArray();

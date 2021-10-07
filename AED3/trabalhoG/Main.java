@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class Main {
   public static Arquivo<Usuario> arqLivros;
+
   public static Scanner leitura = new Scanner(System.in);
   // public static Scanner let2 = new Scanner(System.in);
 
@@ -14,28 +15,87 @@ public class Main {
     // Arquivo<Livro> arqLivros;
     arqLivros = new Arquivo<>("Usuario", Usuario.class.getConstructor());
     int oqfazer = 0;
+    int op2=1;
+    int opcao=0;
     do {
-     // limpar();
+      // limpar();
       System.out.println("              MENU");
       System.out.println("-------------------------------");
-      System.out.println("1 - Acesso ao Sistema");
-      System.out.println("2 - Novo usuário (primeiro acesso)");
+      System.out.println("1 - Acesso a conta");
+      System.out.println("2 - Novo usuario");
       System.out.println("\n0 - Sair");
       oqfazer = leitura.nextInt();
+      
       switch (oqfazer) {
         case 0:
           ;
           break;
 
         case 1:
-          oqfazer = acessoUsuario(arqLivros);
+
+          if (acessoUsuario(arqLivros) == 0) {
+
+            do {
+              System.out.println("              MENU");
+              System.out.println("-------------------------------");
+              System.out.println("1 - Minha area");
+              System.out.println("2 - Buscar perguntas");
+              System.out.println("\n0 - Voltar");
+               opcao = leitura.nextInt();
+              switch (oqfazer) {
+
+                case 1:
+                  while (op2 != 0) {
+                    System.out.println("              MENU");
+                    System.out.println("-------------------------------");
+                    System.out.println("1 - Minhas perguntas");
+                    System.out.println("2 - Minhas respostas");
+                    System.out.println("3 - Meus votos em perguntas");
+                    System.out.println("4 - Meus votos em respostas");
+                    System.out.println("\n0 - Voltar");
+                     op2 = leitura.nextInt();
+                    switch (op2) {
+                      case 0:
+                        ;
+                        break;
+                      case 1:
+                        ;
+                        break;
+                      case 2:
+                        ;
+                        break;
+                      case 3:
+                        ;
+                        break;
+                      case 4:
+                        ;
+                        break;
+                      default:
+                        System.out.println("Opcao inexistente");
+                        break;
+
+                    }
+
+                  } 
+                  break;
+
+                case 2:
+                  ;
+                  break;
+
+                default:
+                  System.out.println("Opcao invalida");
+                  break;
+              }
+
+            } while (opcao != 0);
+          }
           break;
 
         case 2:
           Teste(arqLivros);
           break;
-          
-       
+
         default:
           System.out.print("Opcao Invalida");
           break;
@@ -106,6 +166,7 @@ public class Main {
       senha = leitura.nextLine();
       if (arqLivros.sabersenha(email, senha)) {
         System.out.println("Login realizado, redirecionando...");
+        arqLivros.perguntaN(email, senha);
         return 0;
       } else {
         System.out.println("Senha incorreta");
@@ -115,13 +176,6 @@ public class Main {
     }
     return 1;
   }
-
-
- 
-
- 
-
-
 
   public static void limpar() {
     System.out.print("\033[H\033[2J");
