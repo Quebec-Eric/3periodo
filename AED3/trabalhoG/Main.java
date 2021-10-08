@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class Main {
   public static Arquivo<Usuario> arqLivros;
+  public static ArquivoU<Pergunta> perguntas;
 
   public static Scanner leitura = new Scanner(System.in);
   // public static Scanner let2 = new Scanner(System.in);
@@ -12,20 +13,23 @@ public class Main {
     (new File("dados/Usuario/arquivo.db")).delete();
     (new File("dados/Usuario.hash_c.db")).delete();
     (new File("dados/Usuario.hash_d.db")).delete();
+
     // Arquivo<Livro> arqLivros;
     arqLivros = new Arquivo<>("Usuario", Usuario.class.getConstructor());
+    perguntas = new ArquivoU<>("Pergunta", Pergunta.class.getConstructor());
     int oqfazer = 0;
-    int op2=1;
-    int opcao=0;
+    int op2 = 1;
+    int opcao = 0;
     do {
       // limpar();
+      limpar();
       System.out.println("              MENU");
       System.out.println("-------------------------------");
-      System.out.println("1 - Acesso a conta");
+      System.out.println("1 - Acesso a conta (Minha area/Buscar perguntas)");
       System.out.println("2 - Novo usuario");
       System.out.println("\n0 - Sair");
       oqfazer = leitura.nextInt();
-      
+
       switch (oqfazer) {
         case 0:
           ;
@@ -33,19 +37,21 @@ public class Main {
 
         case 1:
 
-          if (acessoUsuario(arqLivros) == 0) {
+          if (acessoUsuario(arqLivros, perguntas) == 0) {
 
             do {
+              limpar();
               System.out.println("              MENU");
               System.out.println("-------------------------------");
               System.out.println("1 - Minha area");
               System.out.println("2 - Buscar perguntas");
               System.out.println("\n0 - Voltar");
-               opcao = leitura.nextInt();
+              opcao = leitura.nextInt();
               switch (oqfazer) {
 
                 case 1:
                   while (op2 != 0) {
+                    limpar();
                     System.out.println("              MENU");
                     System.out.println("-------------------------------");
                     System.out.println("1 - Minhas perguntas");
@@ -53,7 +59,7 @@ public class Main {
                     System.out.println("3 - Meus votos em perguntas");
                     System.out.println("4 - Meus votos em respostas");
                     System.out.println("\n0 - Voltar");
-                     op2 = leitura.nextInt();
+                    op2 = leitura.nextInt();
                     switch (op2) {
                       case 0:
                         ;
@@ -72,11 +78,13 @@ public class Main {
                         break;
                       default:
                         System.out.println("Opcao inexistente");
+                        System.out.println("Aperte enter para continuar");
+                        String teste23 = leitura.nextLine();
                         break;
 
                     }
 
-                  } 
+                  }
                   break;
 
                 case 2:
@@ -85,6 +93,8 @@ public class Main {
 
                 default:
                   System.out.println("Opcao invalida");
+                  System.out.println("Aperte enter para continuar");
+                  String teste23 = leitura.nextLine();
                   break;
               }
 
@@ -98,6 +108,8 @@ public class Main {
 
         default:
           System.out.print("Opcao Invalida");
+          System.out.println("Aperte enter para continuar");
+          String teste23 = leitura.nextLine();
           break;
       }
 
@@ -129,6 +141,7 @@ public class Main {
 
         System.out.println("Deseja confirmar o cadastro -> 0 - Nao  1 - Sim ");
         int confirm = leitura.nextInt();
+
         if (confirm == 1) {
 
           // Usuario U1 = new Usuario(-1,email,nome, senha);
@@ -139,24 +152,32 @@ public class Main {
             e.printStackTrace();
           }
           System.out.println("Cadastro realizado com sucesso");
+          System.out.println("\nAperte enter para continuar");
+          String teste23 = leitura.nextLine();
         } else {
           System.out.println("Cadastro abortado");
+          System.out.println("Aperte enter para continuar");
+          String teste23 = leitura.nextLine();
         }
 
       } else {
         System.out.println("Email ja cadastrado");
+        System.out.println("Aperte enter para continuar");
+        String teste23 = leitura.nextLine();
       }
 
     } else {
       System.out.println("Email em branco");
+      System.out.println("Aperte enter para continuar");
+      String teste23 = leitura.nextLine();
     }
   }
 
-  public static int acessoUsuario(Arquivo<Usuario> a) throws Exception {
+  public static int acessoUsuario(Arquivo<Usuario> a, ArquivoU<Pergunta> p) throws Exception {
 
     String email = "";
     String senha = "";
-
+    limpar();
     leitura.nextLine();
 
     System.out.print("Digite o Email : ");
@@ -166,13 +187,26 @@ public class Main {
       senha = leitura.nextLine();
       if (arqLivros.sabersenha(email, senha)) {
         System.out.println("Login realizado, redirecionando...");
-        arqLivros.perguntaN(email, senha);
+
+        limpar();
+        long t = 10 / 10 / 2020;
+        short g = 100;
+        Pergunta tt = new Pergunta(3, 2, t, g, "Se 2 + 2 sao 4 , por que o pc ta caro?", "caro", true);
+        p.Create(tt);
+        System.out.println(tt.toString());
+        System.out.println("Aperte enter para continuar");
+        String teste23 = leitura.nextLine();
+
         return 0;
       } else {
         System.out.println("Senha incorreta");
+        System.out.println("Aperte enter para continuar");
+        String teste23 = leitura.nextLine();
       }
     } else {
       System.out.println("Email nao encontrado");
+      System.out.println("Aperte enter para continuar");
+      String teste23 = leitura.nextLine();
     }
     return 1;
   }

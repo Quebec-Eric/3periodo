@@ -1,4 +1,18 @@
+/*********
+ * ARVORE B+ 
+ * 
+ * Os nomes dos métodos foram mantidos em inglês
+ * apenas para manter a coerência com o resto da
+ * disciplina:
+ * - boolean create(RegistroArvoreBMais objeto)   
+ * - int[] read(RegistroArvoreBMais objeto)
+ * - boolean delete(RegistroArvoreBMais objeto)
+ * 
+ * Implementado pelo Prof. Marcos Kutova
+ * v2.0 - 2021
+ */
 package tabelaHex;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.lang.reflect.Constructor;

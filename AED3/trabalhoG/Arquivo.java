@@ -10,7 +10,7 @@ public class Arquivo<T extends Registro> {
   RandomAccessFile arquivo;
   HashExtensivel<ParIDEndereco> indiceDireto;
   Constructor<T> construtor;
-  ArvoreBMais<ParIntInt> arvore;
+  //ArvoreBMais<ParIntInt> arvore;
   RandomAccessFile pergunta;
   Pergunta pqTeste;
 
@@ -25,14 +25,13 @@ public class Arquivo<T extends Registro> {
       f.mkdir();
     }
     arquivo = new RandomAccessFile("dados/" + nomeArquivo + "/arquivo.db", "rw");
-    pergunta = new RandomAccessFile("dados/" + "perguntas" + ".db", "rw");
+    
     construtor = c;
     if (arquivo.length() == 0) {
       arquivo.writeInt(0);
       indiceDireto = new HashExtensivel<>(ParIDEndereco.class.getConstructor(), 4,
           "dados/" + nomeArquivo + ".hash_d.db", "dados/" + nomeArquivo + ".hash_c.db");
-      arvore = new ArvoreBMais<>(ParIntInt.class.getConstructor(), 5, "dados/" + "arvore1" + ".db");
-
+      
     }
   }
 
@@ -177,7 +176,7 @@ public class Arquivo<T extends Registro> {
     return ob.getID();
 
   }
-
+ ///// tirar depois a linha 149 ate 178
   public boolean update(T obN) throws Exception {
 
     byte[] registroAntigo;
