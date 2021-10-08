@@ -1,5 +1,9 @@
 import java.io.*;
 import java.util.Scanner;
+import java.util.Calendar;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class Main {
   public static Arquivo<Usuario> arqLivros;
@@ -21,7 +25,6 @@ public class Main {
     int op2 = 1;
     int opcao = 0;
     do {
-      // limpar();
       limpar();
       System.out.println("              MENU");
       System.out.println("-------------------------------");
@@ -47,8 +50,10 @@ public class Main {
               System.out.println("2 - Buscar perguntas");
               System.out.println("\n0 - Voltar");
               opcao = leitura.nextInt();
-              switch (oqfazer) {
-
+              switch (opcao) {
+                  case 0:
+                  ;
+                  break;
                 case 1:
                   while (op2 != 0) {
                     limpar();
@@ -187,13 +192,13 @@ public class Main {
       senha = leitura.nextLine();
       if (arqLivros.sabersenha(email, senha)) {
         System.out.println("Login realizado, redirecionando...");
-
-        limpar();
         long t = 10 / 10 / 2020;
         short g = 100;
         Pergunta tt = new Pergunta(3, 2, t, g, "Se 2 + 2 sao 4 , por que o pc ta caro?", "caro", true);
         p.Create(tt);
-        System.out.println(tt.toString());
+
+        p.readP(1);
+        //limpar();
         System.out.println("Aperte enter para continuar");
         String teste23 = leitura.nextLine();
 
@@ -214,6 +219,26 @@ public class Main {
   public static void limpar() {
     System.out.print("\033[H\033[2J");
     System.out.flush();
+  }
+
+  public void inserir(String pergunta, String palavrachave, ArquivoU<Pergunta> p) throws Exception {
+
+    long t = 10 / 10 / 2020;
+    short g = 0;
+
+    Calendar c = Calendar.getInstance();
+    Date data = c.getTime();
+    SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyHHmmss");
+
+    String salvaData = sdf.format(data).toString();
+    Long datelong = Long.parseLong(salvaData);
+
+    // int idUsuario1, int idPergunta1, long criacao1, short nota1, String
+    // pergunta1, String palavrasChave1, boolean ativa1
+    Pergunta tt = new Pergunta(-1, -1, datelong, g, pergunta, palavrachave, true);
+    p.Create(tt);
+    System.out.println(tt.toString());
+
   }
 
 }

@@ -3,8 +3,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
-public class ParIDEndereco implements tabelaHex.RegistroHashExtensivel<ParIDEndereco> {
+import tabelaHex.*;
+public class ParIDEndereco implements RegistroHashExtensivel<ParIDEndereco> {
 
   private String email;
   private long endereco;

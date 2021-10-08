@@ -49,32 +49,16 @@ public class Pergunta implements RegistroP {
     }
 
     public int getIdUser() {
-        return this.idPergunta;
+        return idUsuario;
     }
 
     public void setIdUser(int newID) {
-        this.idPergunta = newID;
+        this.idUsuario = newID;
     }
 
     public String toString() {
         // TODO Auto-generated method stub
-
-        /*
-          SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss"); 
-          Date date = new Date(); //dateFormat.format(date); 
-         System.out.println(dateFormat.format(date));
-         */
-
-        Calendar c = Calendar.getInstance();
-        Date data = c.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyHHmmss");
-        System.out.println(sdf.format(data));
-        
-        // long longDate=data.getTime();
-        
-    
-         
-        return "\n" + criacao + "\n" + pergunta;
+        return "\n" + this.criacao + "\n" + this.pergunta + "\nPalavras Chave:" + this.palavrasChave;
 
     }
     public boolean getAtiva(){

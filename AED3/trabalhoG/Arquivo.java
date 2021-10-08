@@ -2,7 +2,6 @@
 import java.io.RandomAccessFile;
 import java.io.File;
 import java.lang.reflect.Constructor;
-
 import tabelaHex.*;
 
 public class Arquivo<T extends Registro> {

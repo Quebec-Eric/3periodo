@@ -3,6 +3,7 @@ import java.io.RandomAccessFile;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.text.Normalizer;
+import java.util.ArrayList;
 
 import tabelaHex.*;
 
@@ -51,6 +52,8 @@ public class ArquivoU<T extends RegistroP> {
             arquivo.writeInt(registro.length);
             arquivo.write(registro);
             arvore.create(new ParIntInt(obj.getIdUser(), obj.getIdP()));
+            arvore.print();
+            System.out.println(obj.getIdUser() + " " + obj.getIdP());
 
         } catch (Exception e) {
 
@@ -59,7 +62,18 @@ public class ArquivoU<T extends RegistroP> {
         return 1;
     }
 
-    public Pergunta readP(int id) {
+    public Pergunta readP(int id) throws Exception {
+
+        int tam = 0;
+
+        Pergunta perg = new Pergunta();
+        ArrayList<ParIntInt> lista1 = arvore.read(new ParIntInt(id, -1));
+        System.out.print(lista1.toString() + " ola ");
+        for (int i = 0; i < lista1.size(); i++)
+            System.out.print(lista1.get(i) + " ");
+
+        // byte[] ba = new byte[0];
+
         return null;
     }
 
