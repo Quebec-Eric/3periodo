@@ -61,7 +61,7 @@ public class ArquivoU<T extends RegistroP> {
 
         return 1;
     }
-
+//ado
     public Pergunta readP(int id) throws Exception {
 
         int tam = 0;
