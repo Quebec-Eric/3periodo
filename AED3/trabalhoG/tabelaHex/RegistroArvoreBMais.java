@@ -1,5 +1,4 @@
 package tabelaHex;
-
 import java.io.IOException;
 
 public interface RegistroArvoreBMais<T> {
