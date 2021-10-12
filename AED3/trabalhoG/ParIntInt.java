@@ -8,7 +8,7 @@ public class ParIntInt implements tabelaHex.RegistroArvoreBMais<ParIntInt> {
 
   private int num1;
   private int num2;
-  private short TAMANHO = 12;
+  private short TAMANHO = 8;
 
   public ParIntInt() {
     this(-1, -1);

@@ -17,6 +17,10 @@ public class Main {
     (new File("dados/Usuario/arquivo.db")).delete();
     (new File("dados/Usuario.hash_c.db")).delete();
     (new File("dados/Usuario.hash_d.db")).delete();
+    (new File("dados/Pergunta/arquivo.db")).delete();
+    (new File("dados/arvore.db")).delete();
+    (new File("dados/bloco.listainv.bd")).delete();
+    (new File("dados/dicionario.listainv.db")).delete();
 
     // Arquivo<Livro> arqLivros;
     arqLivros = new Arquivo<>("Usuario", Usuario.class.getConstructor());
@@ -24,6 +28,7 @@ public class Main {
     int oqfazer = 0;
     int op2 = 1;
     int opcao = 0;
+    int op3 = 1;
     do {
       limpar();
       System.out.println("              MENU");
@@ -39,9 +44,9 @@ public class Main {
           break;
 
         case 1:
-
-          if (acessoUsuario(arqLivros, perguntas) == 0) {
-
+          String pegar = acessoUsuario(arqLivros, perguntas);
+          if (pegar.charAt(1) == '0') {
+            int pegarIdUsuario = pegar.charAt(0) - '0';
             do {
               limpar();
               System.out.println("              MENU");
@@ -51,10 +56,11 @@ public class Main {
               System.out.println("\n0 - Voltar");
               opcao = leitura.nextInt();
               switch (opcao) {
-                  case 0:
+                case 0:
                   ;
                   break;
                 case 1:
+                  op2 = 1;
                   while (op2 != 0) {
                     limpar();
                     System.out.println("              MENU");
@@ -70,7 +76,75 @@ public class Main {
                         ;
                         break;
                       case 1:
-                        ;
+                        op3 = 1;
+                        while (op3 != 0) {
+                          System.out.println("              MENU");
+                          System.out.println("-------------------------------");
+                          System.out.println("1 - Listar");
+                          System.out.println("2 - Incluir");
+                          System.out.println("3 - Alternar");
+                          System.out.println("4 - Arquviar");
+                          System.out.println("\n0 - Voltar");
+                          op3 = leitura.nextInt();
+                          switch (op3) {
+                            case 0:
+                              ;
+                              break;
+                            case 1:
+                              listarPerguntas(pegarIdUsuario, perguntas);
+
+                              break;
+                            case 2:
+                              incluirPergunta(pegarIdUsuario, perguntas);
+                              /*
+                               * System.out.println("Digite sua pergunta :"); leitura.nextLine(); String
+                               * novaPergunta = leitura.nextLine();
+                               * System.out.println("Digite as palavras chave separadas por espaço :"); String
+                               * palavrasChave = leitura.nextLine(); short g = 0; Pergunta tt = new
+                               * Pergunta(pegarIdUsuario, -1, calendario(), g, novaPergunta, palavrasChave,
+                               * true); perguntas.Create(tt); tt.toString();
+                               */
+                              break;
+                            case 3:
+                            listarPerguntasComId(pegarIdUsuario, perguntas);
+                            System.out.println("\nGostaria de mudar qual Pergunta (Digite o id)");
+                            int qualId = leitura.nextInt();
+                            System.out.println("Digite sua nova pergunta :");
+                            leitura.nextLine();
+                            String novaPergunta = leitura.nextLine();
+                            System.out.println("Digite as palavras chave separadas por ; :");
+                            String palavrasChave = leitura.nextLine();
+                            perguntas.update(qualId, novaPergunta, palavrasChave);
+                             
+
+
+                              break;
+                            case 4:
+                            
+                            listarPerguntasComId(pegarIdUsuario, perguntas);
+                            System.out.println("\nGostaria de mudar qual Pergunta (Digite o id)");
+                            int ids = leitura.nextInt();
+                            System.out.println("\nSelecione uma das opcoes: \n0 - Sair \n1 - Ativar \n2 - Desativar");
+                            int status = leitura.nextInt();
+                            if(status == 1)
+                            {
+                              perguntas.arquivarPergunta(ids, true);
+                            }
+                            else if(status == 2){
+                            perguntas.arquivarPergunta(ids, false);
+                            }
+
+
+                              break;
+                            default:
+                              System.out.println("Opcao inexistente");
+                              System.out.println("Aperte enter para continuar");
+                              String teste24 = leitura.nextLine();
+                              break;
+
+                          }
+
+                        }
                         break;
                       case 2:
                         ;
@@ -178,10 +252,11 @@ public class Main {
     }
   }
 
-  public static int acessoUsuario(Arquivo<Usuario> a, ArquivoU<Pergunta> p) throws Exception {
+  public static String acessoUsuario(Arquivo<Usuario> a, ArquivoU<Pergunta> p) throws Exception {
 
     String email = "";
     String senha = "";
+    String tudo = "";
     limpar();
     leitura.nextLine();
 
@@ -192,17 +267,18 @@ public class Main {
       senha = leitura.nextLine();
       if (arqLivros.sabersenha(email, senha)) {
         System.out.println("Login realizado, redirecionando...");
-        long t = 10 / 10 / 2020;
-        short g = 100;
-        Pergunta tt = new Pergunta(3, 2, t, g, "Se 2 + 2 sao 4 , por que o pc ta caro?", "caro", true);
-        p.Create(tt);
+        tudo += arqLivros.read(email, senha).getID();
+        /*
+         * long t = 2020; short g = 100; Pergunta tt = new Pergunta(3, 2, t, g,
+         * "Se 2 + 2 sao 4 , por que o pc ta caro?", "caro", true); p.Create(tt);
+         * 
+         * p.readPId(3); Pergunta nova = p.read1(1); nova.toString(); // limpar();
+         * System.out.println("Aperte enter para continuar"); String teste23 =
+         * leitura.nextLine();
+         */
+        tudo += 0;
 
-        p.readP(1);
-        //limpar();
-        System.out.println("Aperte enter para continuar");
-        String teste23 = leitura.nextLine();
-
-        return 0;
+        return tudo;
       } else {
         System.out.println("Senha incorreta");
         System.out.println("Aperte enter para continuar");
@@ -213,7 +289,8 @@ public class Main {
       System.out.println("Aperte enter para continuar");
       String teste23 = leitura.nextLine();
     }
-    return 1;
+
+    return tudo;
   }
 
   public static void limpar() {
@@ -239,6 +316,77 @@ public class Main {
     p.Create(tt);
     System.out.println(tt.toString());
 
+  }
+
+  public static long calendario() {
+    Calendar c = Calendar.getInstance();
+    Date data = c.getTime();
+    SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyHHmmss");
+
+    String salvaData = sdf.format(data).toString();
+    long datelong = Long.parseLong(salvaData);
+
+    return datelong;
+  }
+
+  public static String sabertodosID(String pato) {
+
+    String idsTodos = "";
+    for (int i = 0; i < pato.length() - 1; i++) {
+
+      if (pato.charAt(i) == ';') {
+        idsTodos += pato.charAt(i + 1);
+      }
+    }
+
+    return idsTodos;
+  }
+
+  public static void listarPerguntas(int pegarIdUsuario, ArquivoU<Pergunta> perguntas) throws Exception {
+    String quantidadeP = perguntas.readPId(pegarIdUsuario);
+    int local = quantidadeP.indexOf("|");
+    int tamanhoPetguntas = quantidadeP.charAt(local + 1) - '0';
+    String idsTT = sabertodosID(quantidadeP);
+    // System.out.println(idsTT);
+    for (int i = 1; i <= tamanhoPetguntas; i++) {
+      perguntas.readProf(idsTT.charAt(i - 1) - '0').toString();
+
+      
+
+    }
+    
+  }
+
+  public static void incluirPergunta(int pegarIdUsuario, ArquivoU<Pergunta> perguntas) throws Exception {
+    System.out.println("Digite sua pergunta :");
+    leitura.nextLine();
+    String novaPergunta = leitura.nextLine();
+    System.out.println("Digite as palavras chave separadas por ; :");
+    String palavrasChave = leitura.nextLine();
+    short g = 0;
+    Pergunta tt = new Pergunta(pegarIdUsuario, -1, calendario(), g, novaPergunta, palavrasChave, true);
+    perguntas.Create(tt);
+    tt.toString();
+     
+  }
+
+  public static void listarPerguntasComId(int pegarIdUsuario, ArquivoU<Pergunta> perguntas) throws Exception {
+    String quantidadeP = perguntas.readPId(pegarIdUsuario);
+    int local = quantidadeP.indexOf("|");
+    int tamanhoPetguntas = quantidadeP.charAt(local + 1) - '0';
+    String idsTT = sabertodosID(quantidadeP);
+    // System.out.println(idsTT);
+    for (int i = 1; i <= tamanhoPetguntas; i++) {
+
+     Pergunta ppp= perguntas.read1(idsTT.charAt(i - 1) - '0');
+     ppp.toString();
+     System.out.println("Esta ativada == "+ppp.getAtiva());
+
+
+    }
+    System.out.println("\n \nAperte enter para continuar");
+    leitura.nextLine();
+    String teste24 = leitura.nextLine();
   }
 
 }

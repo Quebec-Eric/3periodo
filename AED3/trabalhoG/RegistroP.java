@@ -15,4 +15,14 @@ public interface RegistroP {
     public byte[] toByteArray() throws IOException;
 
     public void fromByteArray(byte[] ba) throws IOException, CloneNotSupportedException, Exception;
+
+   
+    public String getPalavrasChave();
+    public Long getCriacao();
+    public short getNota();
+    public void setCriacao(long passada) ;
+    public void setPalavrasChave(String passada);
+     public void setNota(Short passada);
+      public String getPergunta();
+      public void setPergunta(String nova);
 }

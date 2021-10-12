@@ -40,16 +40,16 @@ public class Pergunta implements RegistroP {
         this.ativa = ativa1;
     }
 
-    public void setIdP(int n){
-        this.idPergunta=n;
+    public void setIdP(int n) {
+        this.idPergunta = n;
     }
 
-    public int getIdP(){
-        return idPergunta;
+    public int getIdP() {
+        return this.idPergunta;
     }
 
     public int getIdUser() {
-        return idUsuario;
+        return this.idUsuario;
     }
 
     public void setIdUser(int newID) {
@@ -57,23 +57,67 @@ public class Pergunta implements RegistroP {
     }
 
     public String toString() {
-        // TODO Auto-generated method stub
-        return "\n" + this.criacao + "\n" + this.pergunta + "\nPalavras Chave:" + this.palavrasChave;
+
+        System.out.println("\n" + formularData() + "\n" + this.pergunta + "\nPalavras Chave:" + this.palavrasChave);
+        return "Theres no return";
 
     }
-    public boolean getAtiva(){
+
+    public boolean getAtiva() {
         return this.ativa;
     }
 
-    public void setAtiva(boolean ativa){
-        this.ativa=ativa;
+    public long getdara() {
+        return this.criacao;
     }
+
+    public void setAtiva(boolean ativa) {
+        this.ativa = ativa;
+    }
+
+    public String getPalavrasChave() {
+        return this.palavrasChave;
+    }
+
+    public void setPalavrasChave(String passada) {
+        this.palavrasChave = passada;
+    }
+
+    public Long getCriacao() {
+        return this.criacao;
+    }
+
+    public void setCriacao(long passada) {
+        this.criacao = passada;
+    }
+
+    public short getNota() {
+        return this.nota;
+    }
+
+    public void setNota(Short passada) {
+        this.nota = passada;
+    }
+
+    public void setPergunta(String nova)
+    {
+        this.pergunta = nova;
+
+       
+    }
+    public String getPergunta()
+    {
+       
+        return this.pergunta;
+       
+    }
+
 
     public byte[] toByteArray() throws IOException {
         ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
         DataOutputStream DAOS = new DataOutputStream(BAOS);
         DAOS.writeInt(this.idUsuario);
-        DAOS.writeInt(getIdUser());
+        DAOS.writeInt(this.idPergunta);
         DAOS.writeLong(this.criacao);
         DAOS.writeShort(this.nota);
         DAOS.writeUTF(this.pergunta);
@@ -86,7 +130,7 @@ public class Pergunta implements RegistroP {
         ByteArrayInputStream BAIS = new ByteArrayInputStream(ba);
         DataInputStream DAIS = new DataInputStream(BAIS);
         this.idUsuario = DAIS.readInt();
-        setIdUser(DAIS.readInt());
+        this.idPergunta = DAIS.readInt();
         this.criacao = DAIS.readLong();
         this.nota = DAIS.readShort();
         this.pergunta = DAIS.readUTF();
@@ -94,5 +138,32 @@ public class Pergunta implements RegistroP {
         this.ativa = DAIS.readBoolean();
 
     }
+
+    public String formularData() {
+        boolean oneTimeOnly = false;
+        long oldData = this.criacao;
+        String newData = "";
+        newData += oldData;
+        String final1 = "";
+        for (int i = 0; i < newData.length(); i++) {
+            if (i < 6) {
+                final1 += newData.charAt(i);
+                if (i == 1 || i == 3)
+                    final1 += "/";
+            } else {
+                if (oneTimeOnly == false) {
+                    final1 += " ";
+                    oneTimeOnly = true;
+                }
+                final1 += newData.charAt(i);
+                if (i == 7 || i == 9)
+                    final1 += ":";
+            }
+        }
+
+        return final1;
+    }
+
+
 
 }
