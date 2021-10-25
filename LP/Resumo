@@ -1,0 +1,61 @@
+A grande questão correlacionada ao tipo não seria que eles são, mas qual a sua necessidade nas linguagens de programação. Diante a essa pergunto analisa dos 4 universos da computação e da própria Matemática. Esses 4 universos estão repartidos em Strings, expressões em LISP, expressões em cálculo  e por fim o com juto da teoria de conjuntos.
+ 1-A Strings e um dos universos mais concretos das cadeias de bits tendo assim apenas um tipo, que este diretamente relacionado ao (categoria) de memória tendo sua interpretação sendo determinada por formas externas. Tendo uma total liquações com as expressões do LISP que e outra forma não tipada, onde e contida no universo das Strings.
+ Na relação programa e maquina, temos a noção em que tudo a do mesmo tipo sendo assim todas as são analisadas da mesma forma, passadas por processos que iram identificá-las e tratá-las do mesmo tipo. Já outra forma que pode se interligar seria o cálculo onde tudo, analisado e representado por funções, tendo em seu interior número, e estruturas nas quais formam apenas um tipo determinado para a análise final. Embasando nisso temos a percepção que os universos não tipados não estão totalmente fora do nosso cotidiano, assim possível organizá-los de diferente maneira com diferentes resultados e propósitos.
+2* No cálculo, as funções são determinadas para representar valores nos quais podem ter vários tipos. Na teoria dos conjuntos, os conjuntos são necessários para escolher os pares ordenados nos quais geralmente podem ser chamados funções tendo objetos computacionais dividem em subconjuntos com o comportamento uniforme.
+3* Os conjuntos de objetos com o comportamento uniforme podem ser chamados tipos, sendo assim todos os inteiros demonstram o comportamento uniforme, tendo os mesmo conjuntos de ópera coes aplicáveis na computação. As Funções de inteiros, por outro lado, se comportam uniformemente, sendo aplicadas a outros objetos os fazendo produzirem valores de determinados tipos. Tendo sua classificação dos universos não tipados temos a oportunidade de definir e utilizar os tipos como integrantes gerando assim um novo universo tipado pela categorização dos objetos de acordo com sua demanda.
+
+2
+O principal objetivo das Linguagens de Programação, e o manuseio de um universo tipado tendo em mente eliminar tudo aquilo que não e desejado. O próprio compilador tem o objetivo de dever de registrar todas as linhas de entrada e checar se o tipo está conforme a tipacao já conhecida, com o intuito de evitar as incoerências e erros. Compilador e realizado para facilitar a execução das operações esperadas nos objetivos de dados visando que os erros não passem despercebidos pelo compilador, pois o programa e o compilador impor uma disciplina de tipos e de estruturas que torna os programais mais fáceis de ler.
+
+3 
+ As linguagens tipadas convencionas, como C, tem o intuito que cada valor deF variável pode ser interpretado como apenas um tipo, assim chamadas linguagens monomórficas, mas as funções polimórficas são as que os operadores podem ter mais de um tipo, como inteiros e decimais. Embasado a Chisthopher onde distingui o polimorfismo em dois tipos, o polimorfismo universo, que provem dos paramétricos e as inclusores, e o Ad-Hoc que provem dos overload e os Coercion
+ 
+ 
+ 4 a evolução das linguagens de programação 
+ Ao longo dos anos diversas linguagens de programação foram evoluindo e tentando melhorar as limitações das linguagens  antigas como Fortran m que trabalhava com a distinção de pontos flutuantes e inteiros, já Algol tornou essa  muito mais explicita para o usuário em que pode-se introduzir a declaração dos identifica-os para as variáveis reais inteiras.
+ Pascal fornece uma extensão mais limpa para as categorias de registros e ponteiros de matrizes, já sendo definidos o tipo pelo usuário, entretanto o Pascal não define a equivalência de tipo, em que duas expressões de um tipo denotam que o mesmo tipo depende da implementação, em que além desse grande problema de equivalência ha a existência coma granularidade do tipo. Que se difere bem de ALgol, pois ele tem uma notação muito mais rigorosa de tipo, tendo uma notação bem definida de categoria de equivalência.
+ LISP, tem seu interpretador feito em sua própria linguagem, mas embora seja mais complexa, ela consegue denominar mais de 75 objetos de sistemas relacionados diretamente por uma hierarquia de herança.
+ ML  introduziu a noção de polimorfismo paramétrico em linguagens. Os tipos de ML podem conter o tipo variáveis ​​que são instanciadas para diferentes tipos em diferentes contextos, tendo a possibilidade de especificar as informações dos tipos, dando a escrita do programa podendo ser escritos em todas as instâncias dos tipos.
+ 
+ 
+ 5tipos de Expressão
+ 
+ Com a evolução das linguagens de programação, elas se tornam mais ricas e seu conjuntos de tipagem podem se tornar infinitos, se tornando assim útil a definição do conjunto de tipos por uma sublinguagem de expressões de tipos, tendo a relação entre os tipos de capacidade de realizar cálculos entre os tipo determinado se os mesmos se satisfazem nas relações desejadas, sendo assim que os cálculos de tipos são tao  quanto só cálculos executados em valores 
+ 
+ 
+  
+ Uma linguagem que se baseia em cálculo lambda onde e enriquecida com o cálculo tipodo de primeira ordem, que utiliza alguns recursos de segunda ordem, assim projetado para modelar o polimorfismo da modelagem poliformada e orientada a objetos , sendo a linguagem fun
+ os tipos são universalmente quantificados de tipos de primeira classe sendo assim paramentos reias, nos quais enriquecem os recursos da primeira ordem dando a oportunidade de dados abstratos com a representação oculta.
+ A evolução da untyped a universos digitados podem ser ilustradas pela λ-calculus,
+desenvolvida inicialmente como uma notação untyped para capturar a essência da
+aplicação funcional dos operadores e operando
+ 
+ No entanto, se quisermos indicar o tipo de uma variável como parte de sua
+inicialização, podemos fazê-lo pela notação valor var: T = valor:
+value int pait:intPair=(3,4)
+ 
+ Calculo 
+ 
+ 1 
+ A evolução do universo não tipado , para o tipado são ilustradas pelo cálculo, onde a notação não tipada esta diretamente ligada para a captura da aplicação funcional de operadores a operadores .Com isso as expressos do calculo tem a sintaxe que em que e delfinada um valor universo tradicional com o intuito de tornar a correspondência entre as notações da linguagem. Sendo funções sessora digitada na forma 
+ value succ = fun (x: Int) x+1
+ 
+ Tendo em si a notação se aproxima da especificação funcional das linguagens tipadas, omitindo a especificação dos resultados. Sendo vista na expressão 
+ value succ = fun(x: Int) (returns lnt) x + 1
+
+ 2 tipos 
+ o cálculo sbma e tipoda e geralmente aumentado com vários tipos básicos como :
+ 
+ 
+os tipos das estruturas podem ser construídos a paretis desses tipos básicos através de construtores, sendo eles dos tipos da euma linguagem de programação na qual serão incluídos em expressos de função e categorias de variaveis;
+valor E =10 , 
+as operação entre parade de seletores 
+fts(E) retorna 10
+
+
+tendo em si que as funções são valores de primeira classe , onde poisemos ter o registro de componentes funcionas como :
+
+ 
+ 
+ Simplificando podemos admitir que o únicos valores que podem ser definidor recursiva mentes são as funcoes , permitindo definir o tipo de lista de inteletos fora do registro e tipos de variantes;
+ 
