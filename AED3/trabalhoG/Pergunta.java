@@ -3,6 +3,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
 import java.text.DateFormat;
@@ -99,19 +100,16 @@ public class Pergunta implements RegistroP {
         this.nota = passada;
     }
 
-    public void setPergunta(String nova)
-    {
+    public void setPergunta(String nova) {
         this.pergunta = nova;
 
-       
-    }
-    public String getPergunta()
-    {
-       
-        return this.pergunta;
-       
     }
 
+    public String getPergunta() {
+
+        return this.pergunta;
+
+    }
 
     public byte[] toByteArray() throws IOException {
         ByteArrayOutputStream BAOS = new ByteArrayOutputStream();
@@ -164,6 +162,15 @@ public class Pergunta implements RegistroP {
         return final1;
     }
 
+    public String toString(Usuario er) {
+        System.out.println("\n------------------------------------------------------------------------------------");
+        System.out.println(" " + this.pergunta);
+        System.out.println("------------------------------------------------------------------------------------");
+        System.out.println("Criada em " + formularData() );
+        System.out.println("Palavra chave " + this.palavrasChave);
+        System.out.println("Nota :" + this.nota);
+        return "Theres no return";
 
+    }
 
 }

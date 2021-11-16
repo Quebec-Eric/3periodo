@@ -14,11 +14,11 @@ public class ParIDEndereco implements RegistroHashExtensivel<ParIDEndereco> {
     this(" ", -1);
   }
 
-  public ParIDEndereco(String e, long i) {
+  public ParIDEndereco(String string, long i) {
     try {
-      this.email = e;
+      this.email = string;
       this.endereco = i;
-      if (e.length() + 4 > TAMANHO)
+      if (string.length() + 4 > TAMANHO)
         throw new Exception("Número de caracteres do email maior que o permitido. Os dados serão cortados.");
     } catch (Exception ec) {
       ec.printStackTrace();

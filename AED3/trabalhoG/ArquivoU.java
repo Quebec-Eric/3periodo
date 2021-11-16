@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import tabelaHex.*;
 
-public class ArquivoU<P extends RegistroP> {
+public class ArquivoU<P extends RegistroP>  {
 
     protected int contadorID = 0;
     protected int contadorRe = 0;
@@ -15,8 +15,11 @@ public class ArquivoU<P extends RegistroP> {
     protected long porteiro;
 
     ArvoreBMais<ParIntInt> arvore;
+
     RandomAccessFile arquivo;
+    RandomAccessFile arquivoRR;
     ListaInvertida lista;
+    
 
     ArquivoU(String file, Constructor<P> c) throws Exception {
         File f = new File("dados");
@@ -28,6 +31,7 @@ public class ArquivoU<P extends RegistroP> {
             f.mkdir();
         }
         arquivo = new RandomAccessFile("dados/" + file + "/arquivo.db", "rw");
+       
         construtor = c;
         if (arquivo.length() == 0) {
             arquivo.writeInt(0);
@@ -72,6 +76,10 @@ public class ArquivoU<P extends RegistroP> {
         return 1;
     }
 
+
+
+    
+
     public String readPId(int id) throws Exception {
 
         int tam = 0;
@@ -91,6 +99,12 @@ public class ArquivoU<P extends RegistroP> {
 
         return tudosOsids;
     }
+
+
+
+   
+
+  
 
     public static String removerAcentos(String str) {
         return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
@@ -114,7 +128,7 @@ public class ArquivoU<P extends RegistroP> {
                 // System.out.println("HEY YOOO "+ obj.getIdP()+" == " + idProcurado);
                 // System.out.println(obj.toString());
                 if (obj.getIdP() == idProcurado) {
-                    System.out.println("\nid da PErgunta == " + obj.getIdP());
+                    //System.out.println("\nid da PErgunta == " + obj.getIdP());
                     return obj;
                 }
             } else
@@ -256,7 +270,7 @@ public class ArquivoU<P extends RegistroP> {
                     newobj.setAtiva(obj.getAtiva());
                     newobj.setPergunta(perguntaN);
                     ba2 = newobj.toByteArray();
-                    if (ba2.length > ba.length) { 
+                    if (ba2.length > ba.length) {
                         deletarbj(obj);
                         Criarrbj(newobj);
                         // quer dizer que o novo registro e maior
@@ -299,4 +313,30 @@ public class ArquivoU<P extends RegistroP> {
         }
     }
 
+    public ArrayList<Integer> pegarIdPalavrachave(String[] busca) throws Exception {
+        int[] listaid;
+        ArrayList<Integer> resposta = new ArrayList<Integer>();
+        if (busca.length > 0) {
+            listaid = lista.read(busca[0].trim());
+            for (int id : listaid) {
+                resposta.add(id);
+            }
+            int i = 1;
+            while (i < busca.length) {
+                listaid = lista.read(busca[i]);
+                ArrayList<Integer> lista2 = new ArrayList<Integer>();
+                for (int id : listaid) {
+                    lista2.add(id);
+                }
+                resposta.retainAll(lista2);
+                i++;
+            }
+
+        }
+       
+        
+        return resposta;
+    }
+
 }
+

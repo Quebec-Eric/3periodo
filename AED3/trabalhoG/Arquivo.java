@@ -9,10 +9,9 @@ public class Arquivo<T extends Registro> {
   RandomAccessFile arquivo;
   HashExtensivel<ParIDEndereco> indiceDireto;
   Constructor<T> construtor;
-  //ArvoreBMais<ParIntInt> arvore;
+
   RandomAccessFile pergunta;
   Pergunta pqTeste;
-
 
   public Arquivo(String nomeArquivo, Constructor<T> c) throws Exception {
     File f = new File("dados");
@@ -24,13 +23,13 @@ public class Arquivo<T extends Registro> {
       f.mkdir();
     }
     arquivo = new RandomAccessFile("dados/" + nomeArquivo + "/arquivo.db", "rw");
-    
+
     construtor = c;
     if (arquivo.length() == 0) {
       arquivo.writeInt(0);
       indiceDireto = new HashExtensivel<>(ParIDEndereco.class.getConstructor(), 4,
           "dados/" + nomeArquivo + ".hash_d.db", "dados/" + nomeArquivo + ".hash_c.db");
-      
+
     }
   }
 
@@ -80,6 +79,31 @@ public class Arquivo<T extends Registro> {
       }
     }
 
+    return null;
+  }
+
+
+
+
+
+  public T readNomeUser(int id) throws Exception {
+    arquivo.seek(4); 
+    byte lapide;
+    int tam;
+    T obj = construtor.newInstance();
+    byte[] ba;
+    while (arquivo.getFilePointer() < arquivo.length()) {
+      lapide = arquivo.readByte();
+      tam = arquivo.readInt();
+      if (lapide != '$') {
+        ba = new byte[tam];
+        arquivo.read(ba);
+        obj.fromByteArray(ba);
+        if (obj.getID() == id)
+          return obj;
+      } else
+        arquivo.skipBytes(tam);
+    }
     return null;
   }
 
@@ -147,16 +171,15 @@ public class Arquivo<T extends Registro> {
 
   public boolean perguntaN(String email, String senha) throws Exception {
     T ob = read(email, senha);
-    long t = 10/10/2020;
-     short g =100; 
-    pqTeste = new Pergunta(ob.getID(),2,t,g,"Se 2 + 2 sao 4 , por que o pc ta caro?","caro",true);
-    //System.out.println(creatP(ob));
-
+    long t = 10 / 10 / 2020;
+    short g = 100;
+    pqTeste = new Pergunta(ob.getID(), 2, t, g, "Se 2 + 2 sao 4 , por que o pc ta caro?", "caro", true);
+    // System.out.println(creatP(ob));
 
     return true;
   }
 
-  public int creatP( T ob) throws Exception {
+  public int creatP(T ob) throws Exception {
 
     pergunta.seek(0); // colocar o ponteiro na posicao 1 do arquivo
     int idUltimo = pergunta.readInt();// saber qual o ultimo id no arquivo
@@ -165,17 +188,18 @@ public class Arquivo<T extends Registro> {
     pergunta.writeInt(ob.getID());
 
     pergunta.seek(pergunta.length());
-    long enderecoArk = pergunta .getFilePointer();
+    long enderecoArk = pergunta.getFilePointer();
     byte[] registro = ob.toByteArray();
     pergunta.writeByte(' ');
     pergunta.writeInt(registro.length);
     pergunta.write(registro);
-   // indiceDireto.create(new ParIDEndereco(ob.getHash(), enderecoArk));
+    // indiceDireto.create(new ParIDEndereco(ob.getHash(), enderecoArk));
 
     return ob.getID();
 
   }
- ///// tirar depois a linha 149 ate 178
+
+  ///// tirar depois a linha 149 ate 178
   public boolean update(T obN) throws Exception {
 
     byte[] registroAntigo;
@@ -267,6 +291,30 @@ public class Arquivo<T extends Registro> {
 
     return false;
 
+  }
+
+  public T read(int id) throws Exception {
+    byte[] registro;
+    int tamanhoRegistro;
+    byte lapide;
+
+    T objeto;
+    ParIDEndereco pie = indiceDireto.read(id);
+    if (pie != null) {
+      arquivo.seek(pie.getEndereco());
+      lapide = arquivo.readByte();
+      tamanhoRegistro = arquivo.readInt();
+      registro = new byte[tamanhoRegistro];
+      arquivo.read(registro);
+      if (lapide == ' ') {
+        objeto = this.construtor.newInstance();
+        objeto.fromByteArray(registro);
+        if (objeto.getID() == id) {
+          return objeto;
+        }
+      }
+    }
+    return null;
   }
 
 }
