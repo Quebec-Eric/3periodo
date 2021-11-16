@@ -8,28 +8,28 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Voto {
+public class Votos implements RegistroVotos {
     private int idVoto;
     private int idUsuario;
-    private int idVotado;
+    private int idVotadoPergunta;
     private boolean voto;
 
-    public Voto() {
+    public Votos() {
         this(-1, -1, -1, false);
 
     }
 
-    public Voto(int idVoto, int idUsuario, int idVotado, boolean voto) {
+    public Votos(int idVoto, int idUsuario, int idVotado, boolean voto) {
         this.idVoto = idVoto;
         this.idUsuario = idUsuario;
-        this.idVotado = idVotado;
+        this.idVotadoPergunta = idVotado;
         this.voto = voto;
     }
 
     @Override
     public String toString() {
         return "{" + " idVoto='" + getIdVoto() + "'" + ", idUsuario='" + getIdUsuario() + "'" + ", idVotado='"
-                + getIdVotado() + "'" + ", voto='" + isVoto() + "'" + "}";
+                + getIdVotadoPergunta() + "'" + ", voto='" + isVoto() + "'" + "}";
     }
 
     public int getIdVoto() {
@@ -48,22 +48,19 @@ public class Voto {
         this.idUsuario = idUsuario;
     }
 
-    public int getIdVotado() {
-        return this.idVotado;
+    public int getIdVotadoPergunta() {
+        return this.idVotadoPergunta;
     }
 
-    public void setIdVotado(int idVotado) {
-        this.idVotado = idVotado;
+    public void setIdVotadoPergunta(int idVotado) {
+        this.idVotadoPergunta = idVotado;
     }
 
     public boolean isVoto() {
         return this.voto;
     }
 
-    public boolean getVoto() {
-        return this.voto;
-    }
-
+ 
     public void setVoto(boolean voto) {
         this.voto = voto;
     }
@@ -73,7 +70,7 @@ public class Voto {
         DataOutputStream DAOS = new DataOutputStream(BAOS);
         DAOS.writeInt(this.idVoto);
         DAOS.writeInt(this.idUsuario);
-        DAOS.writeInt(this.idVotado);
+        DAOS.writeInt(this.idVotadoPergunta);
         DAOS.writeBoolean(this.voto);
         return BAOS.toByteArray();
     }
@@ -83,7 +80,7 @@ public class Voto {
         DataInputStream DAIS = new DataInputStream(BAIS);
         this.idVoto=DAIS.readInt();
         this.idUsuario = DAIS.readInt();
-        this.idVotado=DAIS.readInt();
+        this.idVotadoPergunta=DAIS.readInt();
         this.voto=DAIS.readBoolean();
     }
 

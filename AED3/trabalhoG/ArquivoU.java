@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import tabelaHex.*;
 
-public class ArquivoU<P extends RegistroP>  {
+public class ArquivoU<P extends RegistroP> {
 
     protected int contadorID = 0;
     protected int contadorRe = 0;
@@ -19,7 +19,6 @@ public class ArquivoU<P extends RegistroP>  {
     RandomAccessFile arquivo;
     RandomAccessFile arquivoRR;
     ListaInvertida lista;
-    
 
     ArquivoU(String file, Constructor<P> c) throws Exception {
         File f = new File("dados");
@@ -31,7 +30,7 @@ public class ArquivoU<P extends RegistroP>  {
             f.mkdir();
         }
         arquivo = new RandomAccessFile("dados/" + file + "/arquivo.db", "rw");
-       
+
         construtor = c;
         if (arquivo.length() == 0) {
             arquivo.writeInt(0);
@@ -76,10 +75,6 @@ public class ArquivoU<P extends RegistroP>  {
         return 1;
     }
 
-
-
-    
-
     public String readPId(int id) throws Exception {
 
         int tam = 0;
@@ -99,12 +94,6 @@ public class ArquivoU<P extends RegistroP>  {
 
         return tudosOsids;
     }
-
-
-
-   
-
-  
 
     public static String removerAcentos(String str) {
         return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
@@ -128,7 +117,7 @@ public class ArquivoU<P extends RegistroP>  {
                 // System.out.println("HEY YOOO "+ obj.getIdP()+" == " + idProcurado);
                 // System.out.println(obj.toString());
                 if (obj.getIdP() == idProcurado) {
-                    //System.out.println("\nid da PErgunta == " + obj.getIdP());
+                    // System.out.println("\nid da PErgunta == " + obj.getIdP());
                     return obj;
                 }
             } else
@@ -232,15 +221,6 @@ public class ArquivoU<P extends RegistroP>  {
         return true;
     }
 
-    public void colocarnoMesmolugar(P obj, long x) throws Exception {
-        arquivo.seek(x);
-
-        byte[] ba = obj.toByteArray();
-        arquivo.writeByte(' ');
-        arquivo.writeInt(ba.length);
-        arquivo.write(ba);
-
-    }
 
     public boolean update(int idProcurado, String perguntaN, String palavraC) throws Exception {
 
@@ -333,10 +313,91 @@ public class ArquivoU<P extends RegistroP>  {
             }
 
         }
-       
-        
+
         return resposta;
     }
 
-}
+    public boolean atualizarC(P novo) throws Exception {
 
+        arquivo.seek(4); // pular o cabeçalho e se posicionar no primeiro registro
+        byte lapide;
+        int tam;
+        P obj = construtor.newInstance();
+        byte[] ba;
+        while (arquivo.getFilePointer() < arquivo.length()) {
+            long x = arquivo.getFilePointer();
+            lapide = arquivo.readByte();
+            tam = arquivo.readInt();
+            if (lapide == ' ') {
+                ba = new byte[tam];
+                arquivo.read(ba);
+                obj.fromByteArray(ba);
+                if (obj.getIdP() == novo.getIdP()) {
+                    byte[] novo1 = novo.toByteArray();
+                    if (novo1.length == ba.length) {
+                        colocarnoMesmolugar(novo, x);
+                    } else {
+                        excluir(novo.getIdP());
+                        arquivo.seek(0);
+                        int ultimoID = arquivo.readInt();
+                        int proximoID = ultimoID + 1;
+                        arquivo.seek(0);
+                        arquivo.writeInt(proximoID);
+                        arquivo.seek(arquivo.length());
+                        long o = arquivo.getFilePointer();
+                        colocarnoMesmolugar(novo, o);
+                        return true;
+                    }
+
+                    return true;
+                }
+
+            } else {
+                arquivo.skipBytes(tam);
+            }
+        }
+        return false;
+    }
+
+    public void colocarnoMesmolugar(P obj, long x) throws Exception {
+        arquivo.seek(x);
+
+        byte[] ba = obj.toByteArray();
+        arquivo.writeByte(' ');
+        arquivo.writeInt(ba.length);
+        arquivo.write(ba);
+
+    }
+    public boolean excluir(int idProcurado) throws Exception {
+        boolean saberVerdade = false;
+        arquivo.seek(4); // pular o cabeçalho e se posicionar no primeiro registro
+        byte lapide;
+        int tam;
+        P obj = construtor.newInstance();
+        byte[] ba;
+        while (arquivo.getFilePointer() < arquivo.length()) {
+          long x = arquivo.getFilePointer();
+          lapide = arquivo.readByte();
+          tam = arquivo.readInt();
+          if (lapide == ' ') {
+            ba = new byte[tam];
+            arquivo.read(ba);
+            obj.fromByteArray(ba);
+            if (obj.getIdP() == idProcurado) {
+              // System.out.println(x);
+              arquivo.seek(x);
+              arquivo.writeByte('$');
+              // arquivo.writeLong(-1);
+              return true;
+            }
+    
+          } else {
+            arquivo.skipBytes(tam);
+          }
+    
+        }
+    
+        return saberVerdade;
+      }
+
+}

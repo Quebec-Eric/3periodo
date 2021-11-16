@@ -11,6 +11,7 @@ public class Main {
   public static Arquivo<Usuario> arqUser;
   public static ArquivoU<Pergunta> perguntas;
   public static RespostasUsar<Respostas> respostas;
+  public static ArquiVote<Votos> voto;
   public static int idglobal;
   public static Scanner leitura = new Scanner(System.in);
   // public static Scanner let2 = new Scanner(System.in);
@@ -33,6 +34,7 @@ public class Main {
     arqUser = new Arquivo<>("Usuario", Usuario.class.getConstructor());
     perguntas = new ArquivoU<>("Pergunta", Pergunta.class.getConstructor());
     respostas = new RespostasUsar<>("Respostas", Respostas.class.getConstructor());
+    voto = new ArquiVote<>("Votos", Votos.class.getConstructor());
 
     int oqfazer = 0;
     int op2 = 1;
@@ -202,7 +204,7 @@ public class Main {
                   fazerRespostas(pp[op4 - 1].getIdP());
                 }
               }
-              op4=0;
+              op4 = 0;
 
               break;
 
@@ -237,24 +239,24 @@ public class Main {
     int dod = 0;
     do {
       Pergunta p = perguntas.readProf(id);
-
       p.toString(null);
       String rec = respostas.readRRRR(id);
       int local = rec.indexOf("|");
       int tamanhoPetguntas = rec.charAt(local + 1) - '0';
       String idsTT = sabertodosID(rec);
       System.out.println("\n");
+
       if (idsTT.length() > 1) {
         for (int i = 1; i <= tamanhoPetguntas; i++) {
-           System.out.println(respostas.read(idsTT.charAt(i - 1) - '0'));
+
+          System.out.println(respostas.read(idsTT.charAt(i - 1) - '0'));
+
           // System.out.println(idsTT.charAt(i));
         }
-        
-      }
-      else if(idsTT.length()>0){
+
+      } else if (idsTT.length() > 0) {
         System.out.println(respostas.read(idsTT.charAt(0) - '0'));
       }
-      
 
       System.out.println("1) Responder");
       System.out.println("2) Avaliar a pergunta");
@@ -276,9 +278,77 @@ public class Main {
         System.out.println("\n\n" + r.toString());
         break;
       case 2:
+        System.out.println("Avaliar a pergunta");
+        // saber se ja votou ou n
+        Boolean saberV = false;
+        int valorV = 0;
+        System.out.println("\nVote 1 para boa e 0 para ruim");
+        short notaV = p.getNota();
+        valorV = leitura.nextInt();
+        if (valorV == 1) {
+          saberV = true;
+
+          notaV++;
+          p.setNota(notaV);
+        } else if (notaV > 0) {
+          notaV--;
+          p.setNota(notaV);
+        }
+
+        Votos tt = new Votos();
+        tt.setIdUsuario(idglobal);
+        tt.setIdVotadoPergunta(id);
+        tt.setVoto(saberV);
+        voto.create(tt);
+        // mudarvalorNota(p, tt);
+
+        if (perguntas.atualizarC(p)) {
+          System.out.println("\nVoto creditaco");
+        } else {
+          System.out.println("\nErro ao creditar o voto");
+        }
 
         break;
       case 3:
+        System.out.println("Avaliar uma resposta");
+
+        System.out.println("\n");
+        int vetor = 1;
+        if (idsTT.length() > 1) {
+          for (int i = 1; i <= tamanhoPetguntas; i++) {
+
+            System.out.println(vetor + ")\n" + respostas.read(idsTT.charAt(i - 1) - '0'));
+            vetor++;
+            // System.out.println(idsTT.charAt(i));
+          }
+
+        } else if (idsTT.length() > 0) {
+          System.out.println(vetor + ")\n" + respostas.read(idsTT.charAt(0) - '0'));
+        }
+        System.out.println("\nQual resposta gostaria de avaliar?");
+        int receberesposta = leitura.nextInt();
+        Boolean saberR = false;
+        int valorR = 0;
+        Respostas receber = respostas.read(idsTT.charAt(receberesposta - vetor) - '0');
+        System.out.println(receber.toString());
+        System.out.println("\nVote 1 para boa e 0 para ruim");
+        valorR = leitura.nextInt();
+        short notaR = receber.getNota();
+        if (valorR == 1) {
+          saberR = true;
+
+          notaR++;
+          receber.setNota(notaR);
+        } else if (notaR > 0) {
+          notaR--;
+          receber.setNota(notaR);
+        }
+
+        if (respostas.update(receber)) {
+          System.out.println("\nVoto creditaco");
+        } else {
+          System.out.println("\nErro ao creditar o voto");
+        }
 
         break;
       default:

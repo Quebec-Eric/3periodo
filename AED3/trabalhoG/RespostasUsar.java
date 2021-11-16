@@ -81,19 +81,17 @@ public class RespostasUsar<T extends PerguntaRegistro> {
     tudosOsids += "|";
     tudosOsids += i;
 
-    // byte[] ba = new byte[0];
-
     return tudosOsids;
   }
 
-  public T read(int idProcurado) throws Exception {// ler id especifico
+  public T read(int idProcurado) throws Exception {
 
     byte[] registro;
     int tamanhoRegistro;
     byte lapide;
 
     T objeto;
-    Pidend  pie = indiceDirer.read(idProcurado);
+    Pidend pie = indiceDirer.read(idProcurado);
     if (pie != null) {
       arquivo.seek(pie.getEndereco());
       lapide = arquivo.readByte();
@@ -117,88 +115,74 @@ public class RespostasUsar<T extends PerguntaRegistro> {
     return quantidadesArquivo;
   }
 
-  public boolean excluir(int idProcurado) throws Exception {
-    boolean saberVerdade = false;
-    arquivo.seek(TAMANHO_CABECALHO); // pular o cabeçalho e se posicionar no primeiro registro
+  public boolean update(T objetoNovo) throws Exception {
+    long endereco;
+    byte[] registroAtual;
+    byte[] registroNovo;
+    int tamanhoRegistroAtual;
     byte lapide;
-    int tam;
-    T obj = construtor.newInstance();
-    byte[] ba;
-    while (arquivo.getFilePointer() < arquivo.length()) {
-      long x = arquivo.getFilePointer();
+    T objetoAtual;
+
+    Pidend pie = indiceDirer.read(objetoNovo.getIdResposta());
+    if (pie != null) {
+      endereco = pie.getEndereco();
+      arquivo.seek(endereco);
       lapide = arquivo.readByte();
-      tam = arquivo.readInt();
+      tamanhoRegistroAtual = arquivo.readInt();
+      registroAtual = new byte[tamanhoRegistroAtual];
+      arquivo.read(registroAtual);
       if (lapide == ' ') {
-        ba = new byte[tam];
-        arquivo.read(ba);
-        obj.fromByteArray(ba);
-        if (obj.getIdResposta() == idProcurado) {
-          // System.out.println(x);
-          arquivo.seek(x);
-          arquivo.writeByte('$');
-          // arquivo.writeLong(-1);
-          return true;
-        }
-
-      } else {
-        arquivo.skipBytes(tam);
-      }
-
-    }
-
-    return saberVerdade;
-  }
-
-  public boolean atualizarC(T novo) throws Exception {
-
-    arquivo.seek(TAMANHO_CABECALHO); // pular o cabeçalho e se posicionar no primeiro registro
-    byte lapide;
-    int tam;
-    T obj = construtor.newInstance();
-    byte[] ba;
-    while (arquivo.getFilePointer() < arquivo.length()) {
-      long x = arquivo.getFilePointer();
-      lapide = arquivo.readByte();
-      tam = arquivo.readInt();
-      if (lapide == ' ') {
-        ba = new byte[tam];
-        arquivo.read(ba);
-        obj.fromByteArray(ba);
-        if (obj.getIdResposta() == novo.getIdResposta()) {
-          byte[] novo1 = novo.toByteArray();
-          if (novo1.length == ba.length) {
-            colocarnoMesmolugar(novo, x);
+        objetoAtual = this.construtor.newInstance();
+        objetoAtual.fromByteArray(registroAtual);
+        if (objetoAtual.getIdResposta() == objetoNovo.getIdResposta()) {
+          registroNovo = objetoNovo.toByteArray();
+          if (registroNovo.length < tamanhoRegistroAtual) {
+            arquivo.seek(endereco + 5);
+            arquivo.write(registroNovo);
           } else {
-            excluir(novo.getIdResposta());
-            arquivo.seek(0);
-            int ultimoID = arquivo.readInt();
-            int proximoID = ultimoID + 1;
-            arquivo.seek(0);
-            arquivo.writeInt(proximoID);
+            arquivo.seek(endereco);
+            arquivo.writeByte('*');
             arquivo.seek(arquivo.length());
-            long o = arquivo.getFilePointer();
-            colocarnoMesmolugar(novo, o);
-            return true;
+            long novoEndereco = arquivo.getFilePointer();
+            arquivo.writeByte(' ');
+            arquivo.writeInt(registroNovo.length);
+            arquivo.write(registroNovo);
+            indiceDirer.update(new Pidend(objetoNovo.getIdResposta(), novoEndereco));
           }
-
           return true;
         }
-
-      } else {
-        arquivo.skipBytes(tam);
       }
     }
     return false;
   }
 
-  public void colocarnoMesmolugar(T obj, long x) throws Exception {
-    arquivo.seek(x);
+  public boolean delete(int id) throws Exception {
+    long endereco;
+    byte[] registro;
+    int tamanhoRegistro;
+    byte lapide;
+    T objeto;
 
-    byte[] ba = obj.toByteArray();
-    arquivo.writeByte(' ');
-    arquivo.writeInt(ba.length);
-    arquivo.write(ba);
-
+    Pidend pie = indiceDirer.read(id);
+    if (pie != null) {
+      endereco = pie.getEndereco();
+      arquivo.seek(endereco);
+      lapide = arquivo.readByte();
+      tamanhoRegistro = arquivo.readInt();
+      registro = new byte[tamanhoRegistro];
+      arquivo.read(registro);
+      if (lapide == ' ') {
+        objeto = this.construtor.newInstance();
+        objeto.fromByteArray(registro);
+        if (objeto.getIdResposta() == id) {
+          arquivo.seek(endereco);
+          arquivo.writeByte('*');
+          indiceDirer.delete(id);
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 }
