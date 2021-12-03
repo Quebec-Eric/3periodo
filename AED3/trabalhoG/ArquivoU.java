@@ -13,6 +13,7 @@ public class ArquivoU<P extends RegistroP> {
     protected int contadorRe = 0;
     Constructor<P> construtor;
     protected long porteiro;
+    HashExtensivel<Pidend> indiceDirer;
 
     ArvoreBMais<ParIntInt> arvore;
 
@@ -36,6 +37,9 @@ public class ArquivoU<P extends RegistroP> {
             arquivo.writeInt(0);
             arvore = new ArvoreBMais<>(ParIntInt.class.getConstructor(), 5, "dados/arvore.db");
             lista = new ListaInvertida(4, "dados/dicionario.listainv.db", "dados/blocos.listainv.db");
+            indiceDirer = new HashExtensivel<>(Pidend.class.getConstructor(), 4, "dados/" + file + ".hash_d.db",
+                    "dados/" + file + ".hash_c.db");
+
         }
     }
 
@@ -45,28 +49,23 @@ public class ArquivoU<P extends RegistroP> {
         obj.setIdP(idUltimo + 1);// colocar mais 1 id no indice
         arquivo.seek(0);// voltar para a posicao 0
         arquivo.writeInt(obj.getIdP());
-
         arquivo.seek(arquivo.length());
         long enderecoArk = arquivo.getFilePointer();
-        // String
-        // palavra = removerAcentos(obj.toLowerCase());
         String vergulaColocar = obj.getPalavrasChave();
         try {
             String[] palavrasChaves = separadorDePontoEVirgula(obj.getPalavrasChave());
             int i = 0;
             for (i = 0; i < palavrasChaves.length; i++) {
                 lista.create(palavrasChaves[i], obj.getIdP());
-
             }
-
             obj.setPalavrasChave(vergulaColocar);
             byte[] registro = obj.toByteArray();
             arquivo.writeByte(' ');
             arquivo.writeInt(registro.length);
             arquivo.write(registro);
-            // System.out.println("ididididid para aarquivo "+ obj.getIdP() + "idididi user"
-            // + obj.getIdUser());
+
             arvore.create(new ParIntInt(obj.getIdUser(), obj.getIdP()));
+            indiceDirer.create(new Pidend(obj.getIdP(), enderecoArk));
 
         } catch (Exception e) {
 
@@ -77,9 +76,9 @@ public class ArquivoU<P extends RegistroP> {
 
     public String readPId(int id) throws Exception {
 
-        int tam = 0;
+        //int tam = 0;
         String tudosOsids = "";
-        Pergunta perg = new Pergunta();
+        //Pergunta perg = new Pergunta();
         ArrayList<ParIntInt> lista1 = arvore.read(new ParIntInt(id, -1));
         // System.out.print(lista1.toString() + " ola ");
         int i = 0;
@@ -101,53 +100,25 @@ public class ArquivoU<P extends RegistroP> {
 
     public P read1(int idProcurado) throws Exception {// ler id especifico
 
-        // System.out.println("iddddd "+ idProcurado);
-        arquivo.seek(4); // pular o cabeçalho e se posicionar no primeiro registro
+        byte[] registro;
+        int tamanhoRegistro;
         byte lapide;
-        int tam;
-        P obj = construtor.newInstance();
-        byte[] ba;
-        while (arquivo.getFilePointer() < arquivo.length()) {
-            lapide = arquivo.readByte();
-            tam = arquivo.readInt();
-            if (lapide == ' ') {
-                ba = new byte[tam];
-                arquivo.read(ba);
-                obj.fromByteArray(ba);
-                // System.out.println("HEY YOOO "+ obj.getIdP()+" == " + idProcurado);
-                // System.out.println(obj.toString());
-                if (obj.getIdP() == idProcurado) {
-                    // System.out.println("\nid da PErgunta == " + obj.getIdP());
-                    return obj;
-                }
-            } else
-                arquivo.skipBytes(tam);
-        }
-        return null;
-    }
 
-    public P readProf(int idProcurado) throws Exception {
-        // System.out.println("iddddd "+ idProcurado);
-        arquivo.seek(4); // pular o cabeçalho e se posicionar no primeiro registro
-        byte lapide;
-        int tam;
-        P obj = construtor.newInstance();
-        byte[] ba;
-        while (arquivo.getFilePointer() < arquivo.length()) {
+        P objeto;
+        Pidend pie = indiceDirer.read(idProcurado);
+        if (pie != null) {
+            arquivo.seek(pie.getEndereco());
             lapide = arquivo.readByte();
-            tam = arquivo.readInt();
+            tamanhoRegistro = arquivo.readInt();
+            registro = new byte[tamanhoRegistro];
+            arquivo.read(registro);
             if (lapide == ' ') {
-                ba = new byte[tam];
-                arquivo.read(ba);
-                obj.fromByteArray(ba);
-                // System.out.println("HEY YOOO "+ obj.getIdP()+" == " + idProcurado);
-                // System.out.println(obj.toString());
-                if (obj.getIdP() == idProcurado) {
-                    // System.out.println(obj.toString());
-                    return obj;
+                objeto = this.construtor.newInstance();
+                objeto.fromByteArray(registro);
+                if (objeto.getIdP() == idProcurado) {
+                    return objeto;
                 }
-            } else
-                arquivo.skipBytes(tam);
+            }
         }
         return null;
     }
@@ -220,7 +191,6 @@ public class ArquivoU<P extends RegistroP> {
         colocarnoMesmolugar(obj, x);
         return true;
     }
-
 
     public boolean update(int idProcurado, String perguntaN, String palavraC) throws Exception {
 
@@ -319,41 +289,41 @@ public class ArquivoU<P extends RegistroP> {
 
     public boolean atualizarC(P novo) throws Exception {
 
-        arquivo.seek(4); // pular o cabeçalho e se posicionar no primeiro registro
+        long endereco;
+        byte[] registroAtual;
+        byte[] registroNovo;
+        int tamanhoRegistroAtual;
         byte lapide;
-        int tam;
-        P obj = construtor.newInstance();
-        byte[] ba;
-        while (arquivo.getFilePointer() < arquivo.length()) {
-            long x = arquivo.getFilePointer();
-            lapide = arquivo.readByte();
-            tam = arquivo.readInt();
-            if (lapide == ' ') {
-                ba = new byte[tam];
-                arquivo.read(ba);
-                obj.fromByteArray(ba);
-                if (obj.getIdP() == novo.getIdP()) {
-                    byte[] novo1 = novo.toByteArray();
-                    if (novo1.length == ba.length) {
-                        colocarnoMesmolugar(novo, x);
-                    } else {
-                        excluir(novo.getIdP());
-                        arquivo.seek(0);
-                        int ultimoID = arquivo.readInt();
-                        int proximoID = ultimoID + 1;
-                        arquivo.seek(0);
-                        arquivo.writeInt(proximoID);
-                        arquivo.seek(arquivo.length());
-                        long o = arquivo.getFilePointer();
-                        colocarnoMesmolugar(novo, o);
-                        return true;
-                    }
+        P objetoAtual;
 
+        Pidend pie =  indiceDirer.read(novo.getIdP());
+        if (pie != null) {
+            endereco = pie.getEndereco();
+            arquivo.seek(endereco);
+            lapide = arquivo.readByte();
+            tamanhoRegistroAtual = arquivo.readInt();
+            registroAtual = new byte[tamanhoRegistroAtual];
+            arquivo.read(registroAtual);
+            if (lapide == ' ') {
+                objetoAtual = this.construtor.newInstance();
+                objetoAtual.fromByteArray(registroAtual);
+                if (objetoAtual.getIdP() == novo.getIdP()) {
+                    registroNovo = novo.toByteArray();
+                    if (registroNovo.length < tamanhoRegistroAtual) {
+                        arquivo.seek(endereco + 5);
+                        arquivo.write(registroNovo);
+                    } else {
+                        arquivo.seek(endereco);
+                        arquivo.writeByte('*');
+                        arquivo.seek(arquivo.length());
+                        long novoEndereco = arquivo.getFilePointer();
+                        arquivo.writeByte(' ');
+                        arquivo.writeInt(registroNovo.length);
+                        arquivo.write(registroNovo);
+                        indiceDirer.update(new Pidend (novo.getIdP(), novoEndereco));
+                    }
                     return true;
                 }
-
-            } else {
-                arquivo.skipBytes(tam);
             }
         }
         return false;
@@ -368,6 +338,7 @@ public class ArquivoU<P extends RegistroP> {
         arquivo.write(ba);
 
     }
+
     public boolean excluir(int idProcurado) throws Exception {
         boolean saberVerdade = false;
         arquivo.seek(4); // pular o cabeçalho e se posicionar no primeiro registro
@@ -376,28 +347,28 @@ public class ArquivoU<P extends RegistroP> {
         P obj = construtor.newInstance();
         byte[] ba;
         while (arquivo.getFilePointer() < arquivo.length()) {
-          long x = arquivo.getFilePointer();
-          lapide = arquivo.readByte();
-          tam = arquivo.readInt();
-          if (lapide == ' ') {
-            ba = new byte[tam];
-            arquivo.read(ba);
-            obj.fromByteArray(ba);
-            if (obj.getIdP() == idProcurado) {
-              // System.out.println(x);
-              arquivo.seek(x);
-              arquivo.writeByte('$');
-              // arquivo.writeLong(-1);
-              return true;
+            long x = arquivo.getFilePointer();
+            lapide = arquivo.readByte();
+            tam = arquivo.readInt();
+            if (lapide == ' ') {
+                ba = new byte[tam];
+                arquivo.read(ba);
+                obj.fromByteArray(ba);
+                if (obj.getIdP() == idProcurado) {
+                    // System.out.println(x);
+                    arquivo.seek(x);
+                    arquivo.writeByte('$');
+                    // arquivo.writeLong(-1);
+                    return true;
+                }
+
+            } else {
+                arquivo.skipBytes(tam);
             }
-    
-          } else {
-            arquivo.skipBytes(tam);
-          }
-    
+
         }
-    
+
         return saberVerdade;
-      }
+    }
 
 }

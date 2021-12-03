@@ -238,7 +238,7 @@ public class Main {
 
     int dod = 0;
     do {
-      Pergunta p = perguntas.readProf(id);
+      Pergunta p = perguntas.read1(id);
       p.toString(null);
       String rec = respostas.readRRRR(id);
       int local = rec.indexOf("|");
@@ -520,7 +520,7 @@ public class Main {
     String idsTT = sabertodosID(quantidadeP);
     // System.out.println(idsTT);
     for (int i = 1; i <= tamanhoPetguntas; i++) {
-      perguntas.readProf(idsTT.charAt(i - 1) - '0').toString();
+      perguntas.read1(idsTT.charAt(i - 1) - '0').toString();
 
     }
 
