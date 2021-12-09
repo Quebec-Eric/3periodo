@@ -13,6 +13,7 @@ public class Main {
   public static RespostasUsar<Respostas> respostas;
   public static ArquiVote<Votos> voto;
   public static int idglobal;
+  public static ArrayList<Integer> repostaId = new ArrayList();
   public static Scanner leitura = new Scanner(System.in);
   // public static Scanner let2 = new Scanner(System.in);
 
@@ -50,184 +51,184 @@ public class Main {
       oqfazer = leitura.nextInt();
 
       switch (oqfazer) {
-      case 0:
-        ;
-        break;
+        case 0:
+          ;
+          break;
 
-      case 1:
-        String pegar = acessoUsuario(arqUser, perguntas);
-        if (pegar.charAt(1) == '0') {
-          int pegarIdUsuario = pegar.charAt(0) - '0';
-          do {
-            // limpar();
-            System.out.println("              MENU");
-            System.out.println("-------------------------------");
-            System.out.println("1 - Minha area");
-            System.out.println("2 - Buscar perguntas");
-            System.out.println("\n0 - Voltar");
-            opcao = leitura.nextInt();
-            switch (opcao) {
-            case 0:
-              ;
-              break;
-            case 1:
-              op2 = 1;
-              while (op2 != 0) {
-                limpar();
-                System.out.println("              MENU");
-                System.out.println("-------------------------------");
-                System.out.println("1 - Minhas perguntas");
-                System.out.println("2 - Minhas respostas");
-                System.out.println("3 - Meus votos em perguntas");
-                System.out.println("4 - Meus votos em respostas");
-                System.out.println("\n0 - Voltar");
-                op2 = leitura.nextInt();
-                switch (op2) {
+        case 1:
+          String pegar = acessoUsuario(arqUser, perguntas);
+          if (pegar.charAt(1) == '0') {
+            int pegarIdUsuario = pegar.charAt(0) - '0';
+            do {
+              // limpar();
+              System.out.println("              MENU");
+              System.out.println("-------------------------------");
+              System.out.println("1 - Minha area");
+              System.out.println("2 - Buscar perguntas");
+              System.out.println("\n0 - Voltar");
+              opcao = leitura.nextInt();
+              switch (opcao) {
                 case 0:
                   ;
                   break;
                 case 1:
-                  op3 = 1;
-                  while (op3 != 0) {
+                  op2 = 1;
+                  while (op2 != 0) {
+                    limpar();
                     System.out.println("              MENU");
                     System.out.println("-------------------------------");
-                    System.out.println("1 - Listar");
-                    System.out.println("2 - Incluir");
-                    System.out.println("3 - Alternar");
-                    System.out.println("4 - Arquviar");
+                    System.out.println("1 - Minhas perguntas");
+                    System.out.println("2 - Minhas respostas");
+                    System.out.println("3 - Meus votos em perguntas");
+                    System.out.println("4 - Meus votos em respostas");
                     System.out.println("\n0 - Voltar");
-                    op3 = leitura.nextInt();
-                    switch (op3) {
-                    case 0:
-                      ;
-                      break;
-                    case 1:
-                      listarPerguntas(pegarIdUsuario, perguntas);
+                    op2 = leitura.nextInt();
+                    switch (op2) {
+                      case 0:
+                        ;
+                        break;
+                      case 1:
+                        op3 = 1;
+                        while (op3 != 0) {
+                          System.out.println("              MENU");
+                          System.out.println("-------------------------------");
+                          System.out.println("1 - Listar");
+                          System.out.println("2 - Incluir");
+                          System.out.println("3 - Alternar");
+                          System.out.println("4 - Arquviar");
+                          System.out.println("\n0 - Voltar");
+                          op3 = leitura.nextInt();
+                          switch (op3) {
+                            case 0:
+                              ;
+                              break;
+                            case 1:
+                              listarPerguntas(pegarIdUsuario, perguntas);
 
-                      break;
-                    case 2:
-                      incluirPergunta(pegarIdUsuario, perguntas);
-                      /*
-                       * System.out.println("Digite sua pergunta :"); leitura.nextLine(); String
-                       * novaPergunta = leitura.nextLine();
-                       * System.out.println("Digite as palavras chave separadas por espaço :"); String
-                       * palavrasChave = leitura.nextLine(); short g = 0; Pergunta tt = new
-                       * Pergunta(pegarIdUsuario, -1, calendario(), g, novaPergunta, palavrasChave,
-                       * true); perguntas.Create(tt); tt.toString();
-                       */
-                      break;
-                    case 3:
-                      listarPerguntasComId(pegarIdUsuario, perguntas);
-                      System.out.println("\nGostaria de mudar qual Pergunta (Digite o id)");
-                      int qualId = leitura.nextInt();
-                      System.out.println("Digite sua nova pergunta :");
-                      leitura.nextLine();
-                      String novaPergunta = leitura.nextLine();
-                      System.out.println("Digite as palavras chave separadas por ; :");
-                      String palavrasChave = leitura.nextLine();
-                      perguntas.update(qualId, novaPergunta, palavrasChave);
+                              break;
+                            case 2:
+                              incluirPergunta(pegarIdUsuario, perguntas);
+                              /*
+                               * System.out.println("Digite sua pergunta :"); leitura.nextLine(); String
+                               * novaPergunta = leitura.nextLine();
+                               * System.out.println("Digite as palavras chave separadas por espaço :"); String
+                               * palavrasChave = leitura.nextLine(); short g = 0; Pergunta tt = new
+                               * Pergunta(pegarIdUsuario, -1, calendario(), g, novaPergunta, palavrasChave,
+                               * true); perguntas.Create(tt); tt.toString();
+                               */
+                              break;
+                            case 3:
+                              listarPerguntasComId(pegarIdUsuario, perguntas);
+                              System.out.println("\nGostaria de mudar qual Pergunta (Digite o id)");
+                              int qualId = leitura.nextInt();
+                              System.out.println("Digite sua nova pergunta :");
+                              leitura.nextLine();
+                              String novaPergunta = leitura.nextLine();
+                              System.out.println("Digite as palavras chave separadas por ; :");
+                              String palavrasChave = leitura.nextLine();
+                              perguntas.update(qualId, novaPergunta, palavrasChave);
 
-                      break;
-                    case 4:
+                              break;
+                            case 4:
 
-                      listarPerguntasComId(pegarIdUsuario, perguntas);
-                      System.out.println("\nGostaria de mudar qual Pergunta (Digite o id)");
-                      int ids = leitura.nextInt();
-                      System.out.println("\nSelecione uma das opcoes: \n0 - Sair \n1 - Ativar \n2 - Desativar");
-                      int status = leitura.nextInt();
-                      if (status == 1) {
-                        perguntas.arquivarPergunta(ids, true);
-                      } else if (status == 2) {
-                        perguntas.arquivarPergunta(ids, false);
-                      }
+                              listarPerguntasComId(pegarIdUsuario, perguntas);
+                              System.out.println("\nGostaria de mudar qual Pergunta (Digite o id)");
+                              int ids = leitura.nextInt();
+                              System.out.println("\nSelecione uma das opcoes: \n0 - Sair \n1 - Ativar \n2 - Desativar");
+                              int status = leitura.nextInt();
+                              if (status == 1) {
+                                perguntas.arquivarPergunta(ids, true);
+                              } else if (status == 2) {
+                                perguntas.arquivarPergunta(ids, false);
+                              }
 
-                      break;
-                    default:
-                      System.out.println("Opcao inexistente");
-                      System.out.println("Aperte enter para continuar");
-                      String teste24 = leitura.nextLine();
-                      break;
+                              break;
+                            default:
+                              System.out.println("Opcao inexistente");
+                              System.out.println("Aperte enter para continuar");
+                              String teste24 = leitura.nextLine();
+                              break;
+
+                          }
+
+                        }
+                        break;
+                      case 2:
+
+                        ;
+                        break;
+                      case 3:
+                        ;
+                        break;
+                      case 4:
+                        ;
+                        break;
+                      default:
+                        System.out.println("Opcao inexistente");
+                        System.out.println("Aperte enter para continuar");
+                        String teste23 = leitura.nextLine();
+                        break;
 
                     }
 
                   }
                   break;
-                case 2:
 
-                  ;
+                case 2:
+                  int op4 = 1;
+
+                  while (op4 != 0) {
+
+                    System.out.println("              Buscar");
+                    System.out.println("-------------------------------");
+                    System.out.println("Busque as perguntas por palavra chave separadas por ponto e vírgula");
+                    System.out.println("Ex: política;Brasil;eleições");
+                    System.out.print("\n palavras chave: ");
+                    leitura.nextLine();
+                    String palavrasChaves = leitura.nextLine();
+                    palavrasChaves = perguntas.removerAcentos(palavrasChaves);
+                    String[] palavrasSeparadas = perguntas.separadorDePontoEVirgula(palavrasChaves);
+                    ArrayList<Integer> idsT = new ArrayList<>();
+                    idsT = perguntas.pegarIdPalavrachave(palavrasSeparadas);
+                    // System.out.println(idsT.toString());
+                    int dado = 1;
+                    Pergunta[] pp = ordernarMaiornota(idsT);
+                    for (int i = 0; i < pp.length; i++) {
+                      System.out.print(dado + ")");
+                      pp[i].toString();
+                      dado++;
+                    }
+                    System.out.println("Que pergunta deseja visualizar (0 para voltar)?");
+                    op4 = leitura.nextInt();
+
+                    if (op4 > 0) {
+                      fazerRespostas(pp[op4 - 1].getIdP());
+                    }
+                  }
+                  op4 = 0;
+
                   break;
-                case 3:
-                  ;
-                  break;
-                case 4:
-                  ;
-                  break;
+
                 default:
-                  System.out.println("Opcao inexistente");
+                  System.out.println("Opcao invalida");
                   System.out.println("Aperte enter para continuar");
                   String teste23 = leitura.nextLine();
                   break;
-
-                }
-
               }
-              break;
 
-            case 2:
-              int op4 = 1;
+            } while (opcao != 0);
+          }
+          break;
 
-              while (op4 != 0) {
+        case 2:
+          Teste(arqUser);
+          break;
 
-                System.out.println("              Buscar");
-                System.out.println("-------------------------------");
-                System.out.println("Busque as perguntas por palavra chave separadas por ponto e vírgula");
-                System.out.println("Ex: política;Brasil;eleições");
-                System.out.print("\n palavras chave: ");
-                leitura.nextLine();
-                String palavrasChaves = leitura.nextLine();
-                palavrasChaves = perguntas.removerAcentos(palavrasChaves);
-                String[] palavrasSeparadas = perguntas.separadorDePontoEVirgula(palavrasChaves);
-                ArrayList<Integer> idsT = new ArrayList<>();
-                idsT = perguntas.pegarIdPalavrachave(palavrasSeparadas);
-                // System.out.println(idsT.toString());
-                int dado = 1;
-                Pergunta[] pp = ordernarMaiornota(idsT);
-                for (int i = 0; i < pp.length; i++) {
-                  System.out.print(dado + ")");
-                  pp[i].toString();
-                  dado++;
-                }
-                System.out.println("Que pergunta deseja visualizar (0 para voltar)?");
-                op4 = leitura.nextInt();
-
-                if (op4 > 0) {
-                  fazerRespostas(pp[op4 - 1].getIdP());
-                }
-              }
-              op4 = 0;
-
-              break;
-
-            default:
-              System.out.println("Opcao invalida");
-              System.out.println("Aperte enter para continuar");
-              String teste23 = leitura.nextLine();
-              break;
-            }
-
-          } while (opcao != 0);
-        }
-        break;
-
-      case 2:
-        Teste(arqUser);
-        break;
-
-      default:
-        System.out.print("Opcao Invalida");
-        System.out.println("Aperte enter para continuar");
-        String teste23 = leitura.nextLine();
-        break;
+        default:
+          System.out.print("Opcao Invalida");
+          System.out.println("Aperte enter para continuar");
+          String teste23 = leitura.nextLine();
+          break;
       }
 
     } while (oqfazer != 0);
@@ -265,97 +266,110 @@ public class Main {
       dod = leitura.nextInt();
 
       switch (dod) {
-      case 1:
+        case 1:
 
-        Respostas r = new Respostas();
-        String eric = pegarResp();
-        r.setResposta(eric);
-        r.setUsuario(arqUser.readNomeUser(idglobal).getNome());
-        r.setIdUsuario(idglobal);
-        r.setIdPergunta(id);
-        respostas.create(r);
+          Respostas r = new Respostas();
+          String eric = pegarResp();
+          r.setResposta(eric);
+          r.setUsuario(arqUser.readNomeUser(idglobal).getNome());
+          r.setIdUsuario(idglobal);
+          r.setIdPergunta(id);
+          respostas.create(r);
 
-        System.out.println("\n\n" + r.toString());
-        break;
-      case 2:
-        System.out.println("Avaliar a pergunta");
-        // saber se ja votou ou n
-        Boolean saberV = false;
-        int valorV = 0;
-        System.out.println("\nVote 1 para boa e 0 para ruim");
-        short notaV = p.getNota();
-        valorV = leitura.nextInt();
-        if (valorV == 1) {
-          saberV = true;
+          System.out.println("\n\n" + r.toString());
+          break;
+        case 2:
+          System.out.println("Avaliar a pergunta");
+          if(voto.desobrirSejavotou(idglobal)){
 
-          notaV++;
-          p.setNota(notaV);
-        } else if (notaV > 0) {
-          notaV--;
-          p.setNota(notaV);
-        }
+         
+          Boolean saberV = false;
+          int valorV = 0;
+          System.out.println("\nVote 1 para boa e 0 para ruim");
+          short notaV = p.getNota();
+          valorV = leitura.nextInt();
+          if (valorV == 1) {
+            saberV = true;
 
-        Votos tt = new Votos();
-        tt.setIdUsuario(idglobal);
-        tt.setIdVotadoPergunta(id);
-        tt.setVoto(saberV);
-        voto.create(tt);
-        // mudarvalorNota(p, tt);
-
-        if (perguntas.atualizarC(p)) {
-          System.out.println("\nVoto creditaco");
-        } else {
-          System.out.println("\nErro ao creditar o voto");
-        }
-
-        break;
-      case 3:
-        System.out.println("Avaliar uma resposta");
-
-        System.out.println("\n");
-        int vetor = 1;
-        if (idsTT.length() > 1) {
-          for (int i = 1; i <= tamanhoPetguntas; i++) {
-
-            System.out.println(vetor + ")\n" + respostas.read(idsTT.charAt(i - 1) - '0'));
-            vetor++;
-            // System.out.println(idsTT.charAt(i));
+            notaV++;
+            p.setNota(notaV);
+          } else if (notaV > 0) {
+            notaV--;
+            p.setNota(notaV);
           }
 
-        } else if (idsTT.length() > 0) {
-          System.out.println(vetor + ")\n" + respostas.read(idsTT.charAt(0) - '0'));
-        }
-        System.out.println("\nQual resposta gostaria de avaliar?");
-        int receberesposta = leitura.nextInt();
-        Boolean saberR = false;
-        int valorR = 0;
-        Respostas receber = respostas.read(idsTT.charAt(receberesposta - vetor) - '0');
-        System.out.println(receber.toString());
-        System.out.println("\nVote 1 para boa e 0 para ruim");
-        valorR = leitura.nextInt();
-        short notaR = receber.getNota();
-        if (valorR == 1) {
-          saberR = true;
+          Votos tt = new Votos();
+          tt.setIdUsuario(idglobal);
+          tt.setIdVotadoPergunta(id);
+          tt.setVoto(saberV);
+          voto.create(tt);
+          // mudarvalorNota(p, tt);
 
-          notaR++;
-          receber.setNota(notaR);
-        } else if (notaR > 0) {
-          notaR--;
-          receber.setNota(notaR);
+          if (perguntas.atualizarC(p)) {
+            System.out.println("\nVoto creditaco");
+          } else {
+            System.out.println("\nErro ao creditar o voto");
+          }
+        
         }
 
-        if (respostas.update(receber)) {
-          System.out.println("\nVoto creditaco");
-        } else {
-          System.out.println("\nErro ao creditar o voto");
+        else {
+          System.out.println("Voce ja avaliou a pergunta");
         }
+        
+          break;
+        case 3:
+          System.out.println("Avaliar uma resposta");
+          if(!repostaId.contains(idglobal)){
+          System.out.println("\n");
+          int vetor = 1;
+          if (idsTT.length() > 1) {
+            for (int i = 1; i <= tamanhoPetguntas; i++) {
 
-        break;
-      default:
-        break;
+              System.out.println(vetor + ")\n" + respostas.read(idsTT.charAt(i - 1) - '0'));
+              vetor++;
+              // System.out.println(idsTT.charAt(i));
+            }
+
+          } else if (idsTT.length() > 0) {
+            System.out.println(vetor + ")\n" + respostas.read(idsTT.charAt(0) - '0'));
+          }
+          System.out.println("\nQual resposta gostaria de avaliar?");
+          int receberesposta = leitura.nextInt();
+          Boolean saberR = false;
+          int valorR = 0;
+          Respostas receber = respostas.read(idsTT.charAt(receberesposta - vetor) - '0');
+          System.out.println(receber.toString());
+          System.out.println("\nVote 1 para boa e 0 para ruim");
+          valorR = leitura.nextInt();
+          short notaR = receber.getNota();
+          if (valorR == 1) {
+            saberR = true;
+
+            notaR++;
+            receber.setNota(notaR);
+          } else if (notaR > 0) {
+            notaR--;
+            receber.setNota(notaR);
+          }
+
+          if (respostas.update(receber)) {
+            System.out.println("\nVoto creditaco");
+          } else {
+            System.out.println("\nErro ao creditar o voto");
+          }
+          repostaId.add(idglobal);
+        }
+        else{
+          System.out.println("Voce ja avaliou a Resposta");
+        }
+          break;
+        default:
+          break;
       }
     } while (dod != 0);
   }
+
 
   public static String pegarResp() throws Exception {
     String resp = "";
@@ -364,6 +378,19 @@ public class Main {
     resp = leitura.nextLine();
     return resp;
 
+  }
+
+  public static boolean saberSejafoiVotado(int idPergunta) throws Exception {
+    
+    Votos saber = voto.read(idPergunta);
+    System.out.println(saber.toString());
+    /*
+    if (saber.getIdUsuario() == idglobal) {
+      return false;
+    }
+    */
+
+    return true;
   }
 
   public static void Teste(Arquivo<Usuario> a) throws Exception {
@@ -590,5 +617,4 @@ public class Main {
     pp[primeiraP] = pp[segundaP];
     pp[segundaP] = receber;
   }
-
 }

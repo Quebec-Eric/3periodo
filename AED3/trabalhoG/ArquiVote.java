@@ -32,11 +32,15 @@ public class ArquiVote<V extends RegistroVotos> {
       arquivo.writeInt(0);
       arvoreR1 = new ArvoreBMais<>(ParIntInt.class.getConstructor(), 5, "dados/Varvore.db");
       arvoreR2 = new ArvoreBMais<>(ParIntInt.class.getConstructor(), 5, "dados/Voarvore.db");
+      
       indiceDirer = new HashExtensivel<>(Pidend.class.getConstructor(), 4, "dados/" + nomeArquivo + ".hash_d.db",
           "dados/" + nomeArquivo + ".hash_c.db");
 
     }
   }
+
+
+  
 
   public int create(V obj) throws Exception {
 
@@ -60,6 +64,40 @@ public class ArquiVote<V extends RegistroVotos> {
     indiceDirer.create(new Pidend(obj.getIdVoto(), endereco));
 
     return proximoID;
+  }
+
+
+  public int createR(V obj) throws Exception {
+
+    arquivo.seek(0);
+    int ultimoID = arquivo.readInt();
+    int proximoID = ultimoID + 1;
+    arquivo.seek(0);
+    arquivo.writeInt(proximoID);
+
+    arquivo.seek(arquivo.length());
+
+    obj.setIdVoto(proximoID);
+    byte[] ba = obj.toByteArray();
+    long endereco = arquivo.getFilePointer();
+    arquivo.writeByte(' ');
+    arquivo.writeInt(ba.length);
+    arquivo.write(ba);
+    
+
+    indiceDirer.create(new Pidend(obj.getIdVoto(), endereco));
+
+    return proximoID;
+  }
+
+  public boolean desobrirSejavotou(int id) throws Exception {
+
+    ArrayList<ParIntInt> lista2 = arvoreR2.read(new ParIntInt(id, -1));
+
+    if(lista2.size()==0){
+      return true;
+    }
+    return false;
   }
 
   public V read(int idProcurado) throws Exception {
@@ -89,9 +127,9 @@ public class ArquiVote<V extends RegistroVotos> {
 
   public String readVVV(int id) throws Exception {
 
-    int tam = 0;
+   // int tam = 0;
     String tudosOsids = "";
-    Pergunta perg = new Pergunta();
+    //Pergunta perg = new Pergunta();
     // System.out.print(id +"ididi");
     ArrayList<ParIntInt> lista1 = arvoreR1.read(new ParIntInt(id, -1));
     // System.out.print(lista1.toString() + " ola ");
